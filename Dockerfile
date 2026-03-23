@@ -60,8 +60,8 @@ RUN npm ci --production=false 2>/dev/null || npm install --production=false
 
 COPY dashboard/ .
 
-# Create empty processed dir so build doesn't fail on missing imports
-RUN mkdir -p /app/processed
+# Ensure directories exist for build
+RUN mkdir -p /app/processed /app/dashboard/public
 
 RUN npm run build
 

@@ -198,8 +198,8 @@
   "adspower": {
     "enabled": true,
     "api_url": "http://localhost:50325",
-    "api_key": "073b915f8ee47c15bb1cf4da963f986f00360af44f2e7041",
-    "profile_id": "k1amt6rq"
+    "api_key": "",
+    "profile_id": ""
   },
   "collection": {
     "reverse_asin_asins": [
@@ -234,6 +234,6 @@
     "export_poll_interval_sec": 10,
     "export_poll_timeout_sec": 300
   },
-  "last_run": "2026-03-23T01:29:16.252873",
+  "last_run": "2026-03-23T14:25:56.955735",
   "last_run_partial": "2026-03-23T01:25:27.409340"
 }
