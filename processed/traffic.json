@@ -1,0 +1,37 @@
+[
+  {
+    "channel": "自然搜索",
+    "source": "Amazon Search",
+    "strategy": "核心词: ties for men(94764), mens ties(65832), tie(61339), ties(34539), mens tie(30897). 优化标题、五点、后台Search Terms. 目标: 核心词进入Top 20."
+  },
+  {
+    "channel": "SP广告",
+    "source": "Sponsored Products",
+    "strategy": "高转化词: N/A. Auto+Exact双投策略, 每日预算$25, 目标ACoS<25%."
+  },
+  {
+    "channel": "SB/SBV广告",
+    "source": "Sponsored Brands / Video",
+    "strategy": "品牌视频广告展示产品特色. 产品类型: Boxers. 目标: 提升品牌知名度, CTR>0.5%."
+  },
+  {
+    "channel": "竞品定向",
+    "source": "Product Targeting Ads",
+    "strategy": "定向竞品ASIN投放. 竞品词: N/A. 重点定向A+(B07BVV8ZNQ)."
+  },
+  {
+    "channel": "品牌搜索",
+    "source": "Brand Search",
+    "strategy": "品牌词: COLD POSH. 确保品牌词搜索占据首位. 建设品牌旗舰店."
+  },
+  {
+    "channel": "站外引流",
+    "source": "Social / Influencer",
+    "strategy": "Instagram/TikTok相关领域博主合作. Pinterest优质图片引流. 产品: Boxers. 目标: 站外流量占比5%+."
+  },
+  {
+    "channel": "促销活动",
+    "source": "Deals / Coupons",
+    "strategy": "设置10-15% Coupon提升转化. Lightning Deal参与Prime Day/黑五. Subscribe & Save暂不适用(非复购品)."
+  }
+]

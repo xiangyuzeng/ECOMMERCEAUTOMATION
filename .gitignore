@@ -9,23 +9,8 @@ __pycache__/
 *.pyc
 *.pyo
 
-# Data files (large, user-specific)
-inputs/sellersprite/*.xlsx
-inputs/seller-central/*.csv
+# Data files (large xlsx/csv kept locally)
 inputs/archive/
-processed/*.json
-outputs/*.xlsx
-outputs/*.md
-data/
-
-# Logs
-logs/*.log
-logs/.collecting
-logs/.processing
-logs/.discovering
-logs/collect_progress.json
-logs/discover_progress.json
-logs/screenshots/
 
 # Environment
 .env
@@ -41,12 +26,7 @@ Thumbs.db
 
 # Debug screenshots
 logs/debug_*.png
-logs/collection_log.json
+logs/screenshots/
 
-# Backup files
-*.backup.json
-
-# Claude settings (contains API keys)
-settings.json
+# Claude internal
 .claude/
-config.json

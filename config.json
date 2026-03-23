@@ -1,0 +1,239 @@
+{
+  "project": "COLD POSH Amazon US — ECOMMERCEAUTOMATION",
+  "version": "3.0",
+  "created": "2026-03-17",
+  "store": {
+    "name": "COLD POSH",
+    "url": "https://www.amazon.com/stores/COLDPOSH/page/C28EB97E-1B2E-497C-B8B9-DD068BE581E6",
+    "established": 2008,
+    "niche": "Premium 100% Mulberry Silk Clothing & Sleepwear",
+    "product_lines": [
+      "Women's Silk Blouses",
+      "Women's Silk Pajama Sets",
+      "Men's Silk Pajama Sets",
+      "Men's Silk Boxers",
+      "Silk Robes/Bathrobes"
+    ]
+  },
+  "active_product": {
+    "asin_parent": "B094PZTFMB",
+    "asin_listing": "B094PZTFMB",
+    "brand": "COLD POSH",
+    "title": "COLD POSH Men's Silk Boxers Luxury Mulberry Silk Underwear, Smooth Loungewear Shorts",
+    "url": "https://www.amazon.com/dp/B094PZTFMB",
+    "category": "Clothing, Shoes & Jewelry > Men > Clothing > Underwear > Boxers",
+    "current_price": 39.98,
+    "rating": 4.0,
+    "review_count": 14,
+    "child_asins": [
+      "B094Q275VM",
+      "B094Q6RK3M",
+      "B094PXY36C",
+      "B094Q37NFH",
+      "B094PYHJPZ",
+      "B094QK2LXK",
+      "B094Q71ZHB",
+      "B094PXW7D1",
+      "B094PSWQB6",
+      "B094Q3YYR6",
+      "B094Q6JFT6",
+      "B094Q8SPJH",
+      "B094PYH4FT",
+      "B094Q9451B",
+      "B094PXPGMW"
+    ],
+    "image_url": "https://m.media-amazon.com/images/I/71e0qEjxUIL._AC_SX679_.jpg"
+  },
+  "competitors": {
+    "C1": {
+      "asin": "B01G9M4QRU",
+      "brand": "A+\nAC",
+      "title": "WeiShang Lot 6 PCS Classic Men's Silk Tie Necktie Woven JACQUARD Neck Ties\nASIN: B01G9M4QRU Best Sel",
+      "price": 5.17,
+      "rating": null,
+      "note": "Auto-discovered competitor"
+    },
+    "C2": {
+      "asin": "B07BVV8ZNQ",
+      "brand": "A+",
+      "title": "Adulove Men's Necktie Classic Silk Tie Woven Jacquard Neck Ties 6 PCS\nASIN: B07BVV8ZNQ Best Seller\nP",
+      "price": 6.77,
+      "rating": null,
+      "note": "Auto-discovered competitor"
+    },
+    "C3": {
+      "asin": "B0CNW3XZXB",
+      "brand": "A+V\nACNR",
+      "title": "Men's Velvet Bow Tie, Pre-Tied Adjustable Bowties, Silk Black Neckties for Men Women for Party Busin",
+      "price": 2.0,
+      "rating": null,
+      "note": "Auto-discovered competitor"
+    },
+    "C4": {
+      "asin": "B07BVRXQGQ",
+      "brand": "A+",
+      "title": "Adulove Men's Necktie Classic Silk Tie Woven Jacquard Neck Ties 6 PCS\nASIN: B07BVRXQGQ \nPASIN : B094",
+      "price": 4.0,
+      "rating": null,
+      "note": "Auto-discovered competitor"
+    }
+  },
+  "seed_keywords": [
+    "men's silk",
+    "men's silk boxers mulberry"
+  ],
+  "cost_inputs": {
+    "unit_cost_usd": 15.0,
+    "packaging_cost": 0.5,
+    "labeling_cost": 0.2,
+    "inbound_shipping_per_unit": 3.0,
+    "referral_fee_rate": 0.17,
+    "fba_fee_estimate": 5.5,
+    "monthly_storage_estimate": 0.87,
+    "ppc_rate": 0.12,
+    "promo_rate": 0.05,
+    "return_rate": 0.15,
+    "tariff_rate": 0.0,
+    "package_dimensions_inches": "12 x 9 x 1",
+    "package_weight_lbs": 0.5
+  },
+  "pricing_scenarios": [
+    {
+      "name": "competitive",
+      "price": 45.99,
+      "label": "竞争价"
+    },
+    {
+      "name": "mid_range",
+      "price": 55.99,
+      "label": "中间价"
+    },
+    {
+      "name": "premium",
+      "price": 65.99,
+      "label": "优质价"
+    },
+    {
+      "name": "current",
+      "price": 109.99,
+      "label": "当前价"
+    }
+  ],
+  "marketplace": "US",
+  "sellersprite_files": {
+    "ignore": [
+      "KeywordMining-US-flashlight-Last-30-days-317877.xlsx",
+      "AdsInsights-US-B08D66HCXW-318049.xlsx",
+      "KeywordResearch-US-202602-317839.xlsx",
+      "ExpandKeywords-US-B0CSFTRMDF-batch(1)-202603-318424.xlsx"
+    ]
+  },
+  "keyword_classification": {
+    "primary": {
+      "大词": {
+        "min_searches": 50000
+      },
+      "核心关键词": {
+        "min_searches": 10000,
+        "max_searches": 50000
+      },
+      "功能场景人群词": {
+        "min_searches": 3000,
+        "max_searches": 10000
+      },
+      "长尾词": {
+        "max_searches": 3000,
+        "min_word_count": 4
+      },
+      "竞品品牌词": {
+        "brand_names": [
+          "lilysilk",
+          "lily silk",
+          "cold posh",
+          "chigant",
+          "zeagoo",
+          "thxsilk",
+          "softho"
+        ]
+      }
+    },
+    "secondary": {
+      "主力出单词": {
+        "min_purchase_rate": 0.02,
+        "max_organic_rank": 20
+      },
+      "潜力测试词": {
+        "min_searches": 5000,
+        "min_organic_rank": 50
+      },
+      "流量防御词": {
+        "min_searches": 10000,
+        "max_purchase_rate": 0.005
+      },
+      "无效亏损词": {
+        "no_purchases": true,
+        "no_rank": true,
+        "min_ppc_bid": 2.0
+      }
+    }
+  },
+  "styling": {
+    "theme": "light",
+    "header_fill": "#1F4E79",
+    "header_font_color": "#FFFFFF",
+    "body_font": "Arial",
+    "body_font_size": 10,
+    "body_font_color": "#2C3E50",
+    "h1_color": "#1F4E79",
+    "h2_color": "#2E75B6",
+    "border_color": "#BFBFBF",
+    "alt_row_fill": "#F2F2F2",
+    "input_font_color": "#0000FF",
+    "input_fill": "#FFFF00",
+    "status_critical": "#C0392B",
+    "status_warning": "#E67E22",
+    "status_healthy": "#27AE60",
+    "status_info": "#0365C0"
+  },
+  "adspower": {
+    "enabled": true,
+    "api_url": "http://localhost:50325",
+    "api_key": "073b915f8ee47c15bb1cf4da963f986f00360af44f2e7041",
+    "profile_id": "k1amt6rq"
+  },
+  "collection": {
+    "reverse_asin_asins": [
+      "B094PZTFMB",
+      "B01G9M4QRU",
+      "B07BVV8ZNQ"
+    ],
+    "comparison_asins": [
+      "B094PZTFMB",
+      "B01G9M4QRU",
+      "B07BVV8ZNQ",
+      "B0CNW3XZXB",
+      "B07BVRXQGQ"
+    ],
+    "mining_seeds": [
+      "men's silk",
+      "men's silk boxers mulberry"
+    ],
+    "research_keyword": "men's silk",
+    "competitor_keyword": "men's silk",
+    "ads_insights_asins": [
+      "B094PZTFMB",
+      "B01G9M4QRU"
+    ],
+    "skip_seller_central": true,
+    "seller_central": {
+      "date_range_days": 60
+    },
+    "chrome_profile_dir": "~/Library/Application Support/Google/Chrome",
+    "chrome_profile_name": "Profile 4",
+    "delay_between_tasks_sec": 5,
+    "export_poll_interval_sec": 10,
+    "export_poll_timeout_sec": 300
+  },
+  "last_run": "2026-03-23T01:29:16.252873",
+  "last_run_partial": "2026-03-23T01:25:27.409340"
+}

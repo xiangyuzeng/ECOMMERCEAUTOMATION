@@ -1,0 +1,1737 @@
+[
+  {
+    "timestamp": "2026-03-18T14:34:55.532060",
+    "sellersprite_results": [
+      {
+        "task": "login_check",
+        "status": "FAILED",
+        "error": "Not logged in"
+      }
+    ],
+    "seller_central_results": [],
+    "succeeded": 0,
+    "failed": 1
+  },
+  {
+    "timestamp": "2026-03-18T16:05:39.502634",
+    "sellersprite_results": [
+      {
+        "task": "export_log_check",
+        "status": "OK",
+        "existing_count": 0
+      },
+      {
+        "task": "reverse_asin_B0BTRTZNS8",
+        "status": "FAILED",
+        "error": "Page.go_back: Timeout 30000ms exceeded.\nCall log:\n  - waiting for navigation until \"load\"\n    - navigated to \"https://www.sellersprite.com/v3/keyword-reverse\"\n"
+      },
+      {
+        "task": "reverse_asin_B07NKYR7VY",
+        "status": "FAILED",
+        "error": "Page.go_back: Timeout 30000ms exceeded.\nCall log:\n  - waiting for navigation until \"load\"\n    - navigated to \"https://www.sellersprite.com/v3/keyword-reverse\"\n"
+      },
+      {
+        "task": "reverse_asin_B0BTRVJHSG",
+        "status": "FAILED",
+        "error": "Page.wait_for_timeout: Target page, context or browser has been closed"
+      },
+      {
+        "task": "traffic_comparison",
+        "status": "FAILED",
+        "error": "Page.wait_for_timeout: Target page, context or browser has been closed"
+      },
+      {
+        "task": "keyword_research",
+        "status": "FAILED",
+        "error": "Page.wait_for_timeout: Target page, context or browser has been closed"
+      },
+      {
+        "task": "keyword_mining_silk_blouse",
+        "status": "FAILED",
+        "error": "Page.wait_for_timeout: Target page, context or browser has been closed"
+      },
+      {
+        "task": "keyword_mining_mulberry_silk",
+        "status": "FAILED",
+        "error": "Page.wait_for_timeout: Target page, context or browser has been closed"
+      },
+      {
+        "task": "keyword_mining_silk_clothes",
+        "status": "FAILED",
+        "error": "Page.wait_for_timeout: Target page, context or browser has been closed"
+      },
+      {
+        "task": "competitor_research",
+        "status": "FAILED",
+        "error": "Page.wait_for_timeout: Target page, context or browser has been closed"
+      },
+      {
+        "task": "ads_insights_B0CSFTRMDF",
+        "status": "FAILED",
+        "error": "Page.wait_for_timeout: Target page, context or browser has been closed"
+      },
+      {
+        "task": "ads_insights_B07NKYR7VY",
+        "status": "FAILED",
+        "error": "Page.wait_for_timeout: Target page, context or browser has been closed"
+      }
+    ],
+    "seller_central_results": [],
+    "succeeded": 1,
+    "failed": 11
+  },
+  {
+    "timestamp": "2026-03-18T16:15:07.585527",
+    "sellersprite_results": [
+      {
+        "task": "export_log_check",
+        "status": "OK",
+        "existing_count": 0
+      },
+      {
+        "task": "reverse_asin_B0BTRTZNS8",
+        "status": "FAILED",
+        "error": "Export timeout"
+      },
+      {
+        "task": "reverse_asin_B07NKYR7VY",
+        "status": "FAILED",
+        "error": "Page.screenshot: Target page, context or browser has been closed"
+      },
+      {
+        "task": "reverse_asin_B0BTRVJHSG",
+        "status": "FAILED",
+        "error": "Page.wait_for_timeout: Target page, context or browser has been closed"
+      },
+      {
+        "task": "traffic_comparison",
+        "status": "FAILED",
+        "error": "Page.wait_for_timeout: Target page, context or browser has been closed"
+      },
+      {
+        "task": "keyword_research",
+        "status": "FAILED",
+        "error": "Page.wait_for_timeout: Target page, context or browser has been closed"
+      },
+      {
+        "task": "keyword_mining_silk_blouse",
+        "status": "FAILED",
+        "error": "Page.wait_for_timeout: Target page, context or browser has been closed"
+      },
+      {
+        "task": "keyword_mining_mulberry_silk",
+        "status": "FAILED",
+        "error": "Page.wait_for_timeout: Target page, context or browser has been closed"
+      },
+      {
+        "task": "keyword_mining_silk_clothes",
+        "status": "FAILED",
+        "error": "Page.wait_for_timeout: Target page, context or browser has been closed"
+      },
+      {
+        "task": "competitor_research",
+        "status": "FAILED",
+        "error": "Page.wait_for_timeout: Target page, context or browser has been closed"
+      },
+      {
+        "task": "ads_insights_B0CSFTRMDF",
+        "status": "FAILED",
+        "error": "Page.wait_for_timeout: Target page, context or browser has been closed"
+      },
+      {
+        "task": "ads_insights_B07NKYR7VY",
+        "status": "FAILED",
+        "error": "Page.wait_for_timeout: Target page, context or browser has been closed"
+      }
+    ],
+    "seller_central_results": [],
+    "succeeded": 1,
+    "failed": 11
+  },
+  {
+    "timestamp": "2026-03-18T17:03:12.664721",
+    "sellersprite_results": [],
+    "seller_central_results": [
+      {
+        "task": "business_report",
+        "status": "FAILED",
+        "error": "ElementHandle.fill: Timeout 30000ms exceeded.\nCall log:\n    - fill(\"01/17/2026\")\n  - attempting fill action\n    2 \u00d7 waiting for element to be visible, enabled and editable\n      - element is not editable\n    - retrying fill action\n    - waiting 20ms\n    2 \u00d7 waiting for element to be visible, enabled and editable\n      - element is not editable\n    - retrying fill action\n      - waiting 100ms\n    59 \u00d7 waiting for element to be visible, enabled and editable\n       - element is not editable\n     - retrying fill action\n       - waiting 500ms\n"
+      },
+      {
+        "task": "search_term_report",
+        "status": "FAILED",
+        "error": "Report creation failed"
+      },
+      {
+        "task": "campaign_report",
+        "status": "FAILED",
+        "error": "Report creation failed"
+      },
+      {
+        "task": "fba_fee_preview",
+        "status": "FAILED",
+        "error": "Download button not found"
+      }
+    ],
+    "succeeded": 0,
+    "failed": 4
+  },
+  {
+    "timestamp": "2026-03-18T20:41:54.584249",
+    "sellersprite_results": [
+      {
+        "task": "export_log_check",
+        "status": "OK",
+        "existing_count": 0,
+        "note": "Using direct download (no export log polling)"
+      },
+      {
+        "task": "reverse_asin_B0FCS8C2L9",
+        "status": "OK",
+        "file": "ReverseASIN-US-B0FCS8C2L9-Last-30-days.xlsx"
+      },
+      {
+        "task": "traffic_comparison",
+        "status": "OK",
+        "file": "CompareKeywords-US-B0BTRTZNS8-260319-384156.xlsx"
+      },
+      {
+        "task": "keyword_research",
+        "status": "OK",
+        "file": "KeywordResearch-US-202602-384165.xlsx"
+      },
+      {
+        "task": "keyword_mining_women's_silk",
+        "status": "FAILED",
+        "error": "No results loaded"
+      },
+      {
+        "task": "keyword_mining_women's_silk_satin_camisole",
+        "status": "FAILED",
+        "error": "No results loaded"
+      },
+      {
+        "task": "competitor_research",
+        "status": "FAILED",
+        "error": "No results loaded"
+      },
+      {
+        "task": "ads_insights_B0FCS8K97J",
+        "status": "FAILED",
+        "error": "Export failed \u2014 no download triggered after all attempts"
+      }
+    ],
+    "seller_central_results": [],
+    "succeeded": 4,
+    "failed": 4
+  },
+  {
+    "timestamp": "2026-03-20T05:38:59.567874",
+    "sellersprite_results": [
+      {
+        "task": "login_check",
+        "status": "FAILED",
+        "error": "Not logged in"
+      }
+    ],
+    "seller_central_results": [
+      {
+        "task": "business_report",
+        "status": "FAILED",
+        "error": "ElementHandle.fill: Timeout 30000ms exceeded.\nCall log:\n    - fill(\"01/19/2026\")\n  - attempting fill action\n    2 \u00d7 waiting for element to be visible, enabled and editable\n      - element is not visible\n    - retrying fill action\n    - waiting 20ms\n    2 \u00d7 waiting for element to be visible, enabled and editable\n      - element is not visible\n    - retrying fill action\n      - waiting 100ms\n    59 \u00d7 waiting for element to be visible, enabled and editable\n       - element is not visible\n     - retrying fill action\n       - waiting 500ms\n"
+      },
+      {
+        "task": "search_term_report",
+        "status": "FAILED",
+        "error": "Report creation failed"
+      },
+      {
+        "task": "campaign_report",
+        "status": "FAILED",
+        "error": "Report creation failed"
+      },
+      {
+        "task": "fba_fee_preview",
+        "status": "FAILED",
+        "error": "Download button not found"
+      }
+    ],
+    "succeeded": 0,
+    "failed": 5
+  },
+  {
+    "timestamp": "2026-03-20T06:07:06.532423",
+    "sellersprite_results": [
+      {
+        "task": "export_log_check",
+        "status": "OK",
+        "existing_count": 0,
+        "note": "Using direct download (no export log polling)"
+      },
+      {
+        "task": "reverse_asin_B0FCS8C2L9",
+        "status": "OK",
+        "file": "ReverseASIN-US-B0FCS8C2L9-Last-30-days.xlsx"
+      },
+      {
+        "task": "traffic_comparison",
+        "status": "OK",
+        "file": "CompareKeywords-US-B0FCS8C2L9-260319-384403.xlsx"
+      },
+      {
+        "task": "keyword_research",
+        "status": "OK",
+        "file": "KeywordResearch-US-202602-384426.xlsx"
+      },
+      {
+        "task": "keyword_mining_women's_silk",
+        "status": "OK",
+        "file": "KeywordMining-US-women's-silk-Last-30-days-438761.xlsx"
+      },
+      {
+        "task": "keyword_mining_women's_silk_satin_camisole",
+        "status": "OK",
+        "file": "KeywordMining-US-women's-silk-satin-camisole-Last-30-days-438855.xlsx"
+      },
+      {
+        "task": "competitor_research",
+        "status": "FAILED",
+        "error": "No results loaded"
+      },
+      {
+        "task": "ads_insights_B0FCS8K97J",
+        "status": "FAILED",
+        "error": "Export failed \u2014 no download triggered after all attempts"
+      }
+    ],
+    "seller_central_results": [],
+    "succeeded": 6,
+    "failed": 2
+  },
+  {
+    "timestamp": "2026-03-20T06:55:56.481761",
+    "sellersprite_results": [
+      {
+        "task": "export_log_check",
+        "status": "OK",
+        "existing_count": 0,
+        "note": "Using direct download (no export log polling)"
+      },
+      {
+        "task": "reverse_asin_B0FCS8C2L9",
+        "status": "OK",
+        "file": "ReverseASIN-US-B0FCS8C2L9-Last-30-days.xlsx"
+      },
+      {
+        "task": "traffic_comparison",
+        "status": "OK",
+        "file": "CompareKeywords-US-B0FCS8C2L9-260320-440044.xlsx"
+      },
+      {
+        "task": "keyword_research",
+        "status": "FAILED",
+        "error": "Search button not found"
+      },
+      {
+        "task": "keyword_mining_women's_silk",
+        "status": "OK",
+        "file": "KeywordMining-US-women's-silk-Last-30-days-440087.xlsx"
+      },
+      {
+        "task": "keyword_mining_women's_silk_satin_camisole",
+        "status": "OK",
+        "file": "KeywordMining-US-women's-silk-Last-30-days-440087.xlsx"
+      },
+      {
+        "task": "competitor_research",
+        "status": "FAILED",
+        "error": "Page.screenshot: Timeout 30000ms exceeded.\nCall log:\n  - taking page screenshot\n  - waiting for fonts to load...\n  - fonts loaded\n"
+      },
+      {
+        "task": "ads_insights_B0FCS8K97J",
+        "status": "FAILED",
+        "error": "Export failed \u2014 no download triggered after all attempts"
+      }
+    ],
+    "seller_central_results": [],
+    "succeeded": 5,
+    "failed": 3
+  },
+  {
+    "timestamp": "2026-03-20T07:48:46.359776",
+    "sellersprite_results": [
+      {
+        "task": "export_log_check",
+        "status": "OK",
+        "existing_count": 0,
+        "note": "Using direct download (no export log polling)"
+      },
+      {
+        "task": "reverse_asin_B0FCS8C2L9",
+        "status": "FAILED",
+        "error": "Page.screenshot: Timeout 30000ms exceeded.\nCall log:\n  - taking page screenshot\n  - waiting for fonts to load...\n  - fonts loaded\n"
+      },
+      {
+        "task": "traffic_comparison",
+        "status": "OK",
+        "file": "CompareKeywords-US-B0FCS8C2L9-260320-440917.xlsx"
+      },
+      {
+        "task": "keyword_research",
+        "status": "OK",
+        "file": "KeywordResearch-US-202602-440958.xlsx"
+      },
+      {
+        "task": "keyword_mining_women's_silk",
+        "status": "OK",
+        "file": "KeywordMining-US-women's-silk-Last-30-days-440987.xlsx"
+      },
+      {
+        "task": "keyword_mining_women's_silk_satin_camisole",
+        "status": "OK",
+        "file": "KeywordMining-US-women's-silk-Last-30-days-440987.xlsx"
+      },
+      {
+        "task": "competitor_research",
+        "status": "OK",
+        "file": "Competitor-US-Last-30-days-441041.xlsx"
+      },
+      {
+        "task": "ads_insights_B0FCS8K97J",
+        "status": "FAILED",
+        "error": "Export failed \u2014 no download triggered after all attempts"
+      }
+    ],
+    "seller_central_results": [],
+    "succeeded": 6,
+    "failed": 2
+  },
+  {
+    "timestamp": "2026-03-20T08:06:20.127164",
+    "sellersprite_results": [],
+    "seller_central_results": [
+      {
+        "task": "business_report",
+        "status": "FAILED",
+        "error": "ElementHandle.fill: Timeout 30000ms exceeded.\nCall log:\n    - fill(\"01/19/2026\")\n  - attempting fill action\n    2 \u00d7 waiting for element to be visible, enabled and editable\n      - element is not editable\n    - retrying fill action\n    - waiting 20ms\n    2 \u00d7 waiting for element to be visible, enabled and editable\n      - element is not editable\n    - retrying fill action\n      - waiting 100ms\n    59 \u00d7 waiting for element to be visible, enabled and editable\n       - element is not editable\n     - retrying fill action\n       - waiting 500ms\n"
+      },
+      {
+        "task": "search_term_report",
+        "status": "FAILED",
+        "error": "Report creation failed"
+      },
+      {
+        "task": "campaign_report",
+        "status": "FAILED",
+        "error": "Report creation failed"
+      },
+      {
+        "task": "fba_fee_preview",
+        "status": "FAILED",
+        "error": "Download button not found"
+      }
+    ],
+    "succeeded": 0,
+    "failed": 4
+  },
+  {
+    "timestamp": "2026-03-20T08:48:02.367626",
+    "sellersprite_results": [
+      {
+        "task": "export_log_check",
+        "status": "OK",
+        "existing_count": 0,
+        "note": "Using direct download (no export log polling)"
+      },
+      {
+        "task": "reverse_asin_B07NKYR7VY",
+        "status": "OK",
+        "file": "ReverseASIN-US-B07NKYR7VY-Last-30-days.xlsx"
+      },
+      {
+        "task": "traffic_comparison",
+        "status": "FAILED",
+        "error": "No results loaded"
+      },
+      {
+        "task": "keyword_research",
+        "status": "OK",
+        "file": "KeywordResearch-US-202602-441641.xlsx"
+      },
+      {
+        "task": "keyword_mining_silk_blouse",
+        "status": "OK",
+        "file": "KeywordMining-US-silk-blouse-Last-30-days-441647.xlsx"
+      },
+      {
+        "task": "keyword_mining_silk_blouse_women",
+        "status": "OK",
+        "file": "KeywordMining-US-silk-blouse-women-Last-30-days-441671.xlsx"
+      },
+      {
+        "task": "competitor_research",
+        "status": "OK",
+        "file": "Competitor-US-Last-30-days-441710.xlsx"
+      },
+      {
+        "task": "ads_insights_B07NKYR7VY",
+        "status": "FAILED",
+        "error": "Export failed \u2014 no download triggered after all attempts"
+      }
+    ],
+    "seller_central_results": [],
+    "succeeded": 6,
+    "failed": 2
+  },
+  {
+    "timestamp": "2026-03-20T10:30:47.412953",
+    "sellersprite_results": [
+      {
+        "task": "export_log_check",
+        "status": "OK",
+        "existing_count": 0,
+        "note": "Using direct download (no export log polling)"
+      },
+      {
+        "task": "reverse_asin_B01LY360QK",
+        "status": "OK",
+        "file": "ReverseASIN-US-B01LY360QK-Last-30-days.xlsx"
+      },
+      {
+        "task": "traffic_comparison",
+        "status": "SKIPPED",
+        "error": "Need 2+ ASINs for comparison, got 1"
+      },
+      {
+        "task": "keyword_research",
+        "status": "OK",
+        "file": "KeywordResearch-US-202602-442299.xlsx"
+      },
+      {
+        "task": "keyword_mining_all_season",
+        "status": "OK",
+        "file": "KeywordMining-US-all-season-Last-30-days-442306.xlsx"
+      },
+      {
+        "task": "keyword_mining_all_season_silk_comforter",
+        "status": "OK",
+        "file": "KeywordMining-US-all-season-silk-comforter-Last-30-days-442319.xlsx"
+      },
+      {
+        "task": "competitor_research",
+        "status": "FAILED",
+        "error": "No results loaded"
+      },
+      {
+        "task": "ads_insights_B01M5ECYUW",
+        "status": "OK",
+        "file": "AdsInsights-US-B01M5ECYUW-442368.xlsx"
+      }
+    ],
+    "seller_central_results": [],
+    "succeeded": 6,
+    "failed": 1
+  },
+  {
+    "timestamp": "2026-03-20T10:44:55.172052",
+    "sellersprite_results": [
+      {
+        "task": "export_log_check",
+        "status": "OK",
+        "existing_count": 0,
+        "note": "Using direct download (no export log polling)"
+      },
+      {
+        "task": "reverse_asin_B01LY360QK",
+        "status": "OK",
+        "file": "ReverseASIN-US-B01LY360QK-Last-30-days.xlsx"
+      },
+      {
+        "task": "traffic_comparison",
+        "status": "SKIPPED",
+        "error": "Need 2+ ASINs for comparison, got 1"
+      },
+      {
+        "task": "keyword_research",
+        "status": "OK",
+        "file": "KeywordResearch-US-202602-442299.xlsx"
+      },
+      {
+        "task": "keyword_mining_all_season",
+        "status": "FAILED",
+        "error": "Export failed \u2014 no download triggered after all attempts"
+      },
+      {
+        "task": "keyword_mining_all_season_silk_comforter",
+        "status": "FAILED",
+        "error": "Browser closed \u2014 aborting remaining tasks"
+      },
+      {
+        "task": "competitor_research",
+        "status": "FAILED",
+        "error": "Browser closed \u2014 aborting remaining tasks"
+      },
+      {
+        "task": "ads_insights_B01M5ECYUW",
+        "status": "FAILED",
+        "error": "Browser closed \u2014 aborting remaining tasks"
+      }
+    ],
+    "seller_central_results": [],
+    "succeeded": 3,
+    "failed": 4
+  },
+  {
+    "timestamp": "2026-03-20T11:05:34.655811",
+    "sellersprite_results": [
+      {
+        "task": "export_log_check",
+        "status": "OK",
+        "existing_count": 0,
+        "note": "Using direct download (no export log polling)"
+      },
+      {
+        "task": "reverse_asin_B01LY360QK",
+        "status": "OK",
+        "file": "ReverseASIN-US-B01LY360QK-Last-30-days.xlsx"
+      },
+      {
+        "task": "traffic_comparison",
+        "status": "SKIPPED",
+        "error": "Need 2+ ASINs for comparison, got 1"
+      },
+      {
+        "task": "keyword_research",
+        "status": "OK",
+        "file": "KeywordResearch-US-202602-442426.xlsx"
+      },
+      {
+        "task": "keyword_mining_all_season",
+        "status": "OK",
+        "file": "KeywordMining-US-all-season-Last-30-days-442431.xlsx"
+      },
+      {
+        "task": "keyword_mining_all_season_silk_comforter",
+        "status": "OK",
+        "file": "KeywordMining-US-all-season-silk-comforter-Last-30-days-442470.xlsx"
+      },
+      {
+        "task": "competitor_research",
+        "status": "FAILED",
+        "error": "Export failed \u2014 no download triggered after all attempts"
+      },
+      {
+        "task": "ads_insights_B01M5ECYUW",
+        "status": "OK",
+        "file": "AdsInsights-US-B01M5ECYUW-442505.xlsx"
+      }
+    ],
+    "seller_central_results": [
+      {
+        "task": "business_report",
+        "status": "FAILED",
+        "error": "ElementHandle.fill: Timeout 30000ms exceeded.\nCall log:\n    - fill(\"01/19/2026\")\n  - attempting fill action\n    2 \u00d7 waiting for element to be visible, enabled and editable\n      - element is not visible\n    - retrying fill action\n    - waiting 20ms\n    2 \u00d7 waiting for element to be visible, enabled and editable\n      - element is not visible\n    - retrying fill action\n      - waiting 100ms\n    59 \u00d7 waiting for element to be visible, enabled and editable\n       - element is not visible\n     - retrying fill action\n       - waiting 500ms\n"
+      },
+      {
+        "task": "search_term_report",
+        "status": "FAILED",
+        "error": "Report creation failed"
+      },
+      {
+        "task": "campaign_report",
+        "status": "FAILED",
+        "error": "Report creation failed"
+      },
+      {
+        "task": "fba_fee_preview",
+        "status": "FAILED",
+        "error": "Download button not found"
+      }
+    ],
+    "succeeded": 6,
+    "failed": 5
+  },
+  {
+    "timestamp": "2026-03-20T13:18:53.690454",
+    "sellersprite_results": [
+      {
+        "task": "export_log_check",
+        "status": "OK",
+        "existing_count": 0,
+        "note": "Using direct download (no export log polling)"
+      },
+      {
+        "task": "reverse_asin_B0CX4YXK4J",
+        "status": "OK",
+        "file": "ReverseASIN-US-B0CX4YXK4J-Last-30-days.xlsx"
+      },
+      {
+        "task": "traffic_comparison",
+        "status": "SKIPPED",
+        "error": "Need 2+ ASINs for comparison, got 1"
+      },
+      {
+        "task": "keyword_research",
+        "status": "OK",
+        "file": "KeywordResearch-US-202602-442862.xlsx"
+      },
+      {
+        "task": "keyword_mining_",
+        "status": "FAILED",
+        "error": "No results loaded"
+      },
+      {
+        "task": "competitor_research",
+        "status": "OK",
+        "file": "Competitor-US-Last-30-days-442871.xlsx"
+      },
+      {
+        "task": "ads_insights_B0CX4YXK4J",
+        "status": "FAILED",
+        "error": "No results loaded"
+      }
+    ],
+    "seller_central_results": [],
+    "succeeded": 4,
+    "failed": 2
+  },
+  {
+    "timestamp": "2026-03-20T14:13:36.184363",
+    "sellersprite_results": [
+      {
+        "task": "export_log_check",
+        "status": "OK",
+        "existing_count": 0,
+        "note": "Using direct download (no export log polling)"
+      },
+      {
+        "task": "reverse_asin_B0B977L1FD",
+        "status": "FAILED",
+        "error": "Export failed \u2014 no download triggered after all attempts"
+      },
+      {
+        "task": "traffic_comparison",
+        "status": "SKIPPED",
+        "error": "Need 2+ ASINs for comparison, got 1"
+      },
+      {
+        "task": "keyword_research",
+        "status": "OK",
+        "file": "KeywordResearch-US-202602-443013.xlsx"
+      },
+      {
+        "task": "keyword_mining_commercial_freezer",
+        "status": "FAILED",
+        "error": "Page.wait_for_timeout: Target page, context or browser has been closed"
+      },
+      {
+        "task": "keyword_mining_commercial_freezer_48\"w_door",
+        "status": "FAILED",
+        "error": "Browser closed \u2014 aborting remaining tasks"
+      },
+      {
+        "task": "competitor_research",
+        "status": "FAILED",
+        "error": "Browser closed \u2014 aborting remaining tasks"
+      },
+      {
+        "task": "ads_insights_B0FG28RFFP",
+        "status": "FAILED",
+        "error": "Browser closed \u2014 aborting remaining tasks"
+      }
+    ],
+    "seller_central_results": [],
+    "succeeded": 2,
+    "failed": 5
+  },
+  {
+    "timestamp": "2026-03-20T15:01:04.536226",
+    "sellersprite_results": [
+      {
+        "task": "export_log_check",
+        "status": "OK",
+        "existing_count": 0,
+        "note": "Using direct download (no export log polling)"
+      },
+      {
+        "task": "reverse_asin_B0CX4YXK4J",
+        "status": "OK",
+        "file": "ReverseASIN-US-B0CX4YXK4J-Last-30-days.xlsx"
+      },
+      {
+        "task": "keyword_research",
+        "status": "OK",
+        "file": "KeywordResearch-US-202602-443082.xlsx"
+      },
+      {
+        "task": "keyword_mining_",
+        "status": "FAILED",
+        "error": "No results loaded"
+      },
+      {
+        "task": "competitor_research",
+        "status": "OK",
+        "file": "Competitor-US-Last-30-days-443151.xlsx"
+      },
+      {
+        "task": "ads_insights_B0CX4YXK4J",
+        "status": "FAILED",
+        "error": "No results loaded"
+      }
+    ],
+    "seller_central_results": [],
+    "succeeded": 4,
+    "failed": 2
+  },
+  {
+    "timestamp": "2026-03-20T15:30:22.542798",
+    "sellersprite_results": [
+      {
+        "task": "export_log_check",
+        "status": "OK",
+        "existing_count": 0,
+        "note": "Using direct download (no export log polling)"
+      },
+      {
+        "task": "reverse_asin_B0B977L1FD",
+        "status": "OK",
+        "file": "ReverseASIN-US-B0B977L1FD-Last-30-days.xlsx"
+      },
+      {
+        "task": "keyword_research",
+        "status": "OK",
+        "file": "KeywordResearch-US-202602-443173.xlsx"
+      },
+      {
+        "task": "keyword_mining_commercial_freezer",
+        "status": "OK",
+        "file": "KeywordMining-US-commercial-freezer-Last-30-days-443175.xlsx"
+      },
+      {
+        "task": "keyword_mining_commercial_freezer_48\"w_door",
+        "status": "OK",
+        "file": "KeywordMining-US-commercial-freezer-48_w-door-Last-30-days-443177.xlsx"
+      },
+      {
+        "task": "competitor_research",
+        "status": "OK",
+        "file": "Competitor-US-Last-30-days-443180.xlsx"
+      },
+      {
+        "task": "ads_insights_B0FG28RFFP",
+        "status": "OK",
+        "file": "AdsInsights-US-B0FG28RFFP-443182.xlsx"
+      }
+    ],
+    "seller_central_results": [],
+    "succeeded": 7,
+    "failed": 0
+  },
+  {
+    "timestamp": "2026-03-20T15:47:32.512255",
+    "sellersprite_results": [
+      {
+        "task": "export_log_check",
+        "status": "OK",
+        "existing_count": 0,
+        "note": "Using direct download (no export log polling)"
+      },
+      {
+        "task": "reverse_asin_B0CCZ26B5V",
+        "status": "FAILED",
+        "error": "Page.query_selector: Target page, context or browser has been closed"
+      },
+      {
+        "task": "keyword_research",
+        "status": "FAILED",
+        "error": "Browser closed \u2014 aborting remaining tasks"
+      },
+      {
+        "task": "keyword_mining_quietcomfort_headphones",
+        "status": "FAILED",
+        "error": "Browser closed \u2014 aborting remaining tasks"
+      },
+      {
+        "task": "keyword_mining_quietcomfort_headphones_wireless_bluetooth",
+        "status": "FAILED",
+        "error": "Browser closed \u2014 aborting remaining tasks"
+      },
+      {
+        "task": "competitor_research",
+        "status": "FAILED",
+        "error": "Browser closed \u2014 aborting remaining tasks"
+      },
+      {
+        "task": "ads_insights_B0CZTW3GLB",
+        "status": "FAILED",
+        "error": "Browser closed \u2014 aborting remaining tasks"
+      }
+    ],
+    "seller_central_results": [],
+    "succeeded": 1,
+    "failed": 6
+  },
+  {
+    "timestamp": "2026-03-20T16:10:34.179277",
+    "sellersprite_results": [
+      {
+        "task": "export_log_check",
+        "status": "OK",
+        "existing_count": 0,
+        "note": "Using direct download (no export log polling)"
+      },
+      {
+        "task": "reverse_asin_B0CCZ26B5V",
+        "status": "OK",
+        "file": "ReverseASIN-US-B0CCZ26B5V-Last-30-days.xlsx"
+      },
+      {
+        "task": "keyword_research",
+        "status": "OK",
+        "file": "KeywordResearch-US-202602-443203.xlsx"
+      },
+      {
+        "task": "keyword_mining_quietcomfort_headphones",
+        "status": "OK",
+        "file": "KeywordMining-US-quietcomfort-headphones-Last-30-days-443207.xlsx"
+      },
+      {
+        "task": "keyword_mining_quietcomfort_headphones_wireless_bluetooth",
+        "status": "OK",
+        "file": "KeywordMining-US-quietcomfort-headphones-wireless-bluetooth-Last-30-days-443210.xlsx"
+      },
+      {
+        "task": "competitor_research",
+        "status": "OK",
+        "file": "Competitor-US-Last-30-days-443214.xlsx"
+      },
+      {
+        "task": "ads_insights_B0CZTW3GLB",
+        "status": "OK",
+        "file": "AdsInsights-US-B0CZTW3GLB-443219.xlsx"
+      }
+    ],
+    "seller_central_results": [],
+    "succeeded": 7,
+    "failed": 0
+  },
+  {
+    "timestamp": "2026-03-20T16:25:53.255445",
+    "sellersprite_results": [
+      {
+        "task": "export_log_check",
+        "status": "OK",
+        "existing_count": 0,
+        "note": "Using direct download (no export log polling)"
+      },
+      {
+        "task": "reverse_asin_B08QB88Q6S",
+        "status": "OK",
+        "file": "ReverseASIN-US-B08QB88Q6S-Last-30-days.xlsx"
+      },
+      {
+        "task": "keyword_research",
+        "status": "OK",
+        "file": "KeywordResearch-US-202602-443236.xlsx"
+      },
+      {
+        "task": "competitor_research",
+        "status": "OK",
+        "file": "Competitor-US-Last-30-days-443241.xlsx"
+      },
+      {
+        "task": "ads_insights_B08QB88Q6S",
+        "status": "FAILED",
+        "error": "No results loaded"
+      }
+    ],
+    "seller_central_results": [],
+    "succeeded": 4,
+    "failed": 1
+  },
+  {
+    "timestamp": "2026-03-20T19:11:25.104835",
+    "sellersprite_results": [
+      {
+        "task": "export_log_check",
+        "status": "OK",
+        "existing_count": 0,
+        "note": "Using direct download (no export log polling)"
+      },
+      {
+        "task": "reverse_asin_B09VPHVT2Z",
+        "status": "FAILED",
+        "error": "Export failed \u2014 no download triggered after all attempts"
+      },
+      {
+        "task": "keyword_research",
+        "status": "FAILED",
+        "error": "All endpoints/retries exhausted"
+      },
+      {
+        "task": "competitor_research",
+        "status": "OK",
+        "file": "Competitor-US-Last-30-days-443241.xlsx"
+      },
+      {
+        "task": "ads_insights_B09VPHVT2Z",
+        "status": "OK",
+        "file": "AdsInsights-US-B09VPHVT2Z-443478.xlsx"
+      }
+    ],
+    "seller_central_results": [],
+    "succeeded": 3,
+    "failed": 2
+  },
+  {
+    "timestamp": "2026-03-20T19:39:15.265683",
+    "sellersprite_results": [
+      {
+        "task": "export_log_check",
+        "status": "OK",
+        "existing_count": 0,
+        "note": "Using direct download (no export log polling)"
+      },
+      {
+        "task": "reverse_asin_B0D1XD1ZV3",
+        "status": "OK",
+        "file": "ReverseASIN-US-B0D1XD1ZV3-Last-30-days.xlsx"
+      },
+      {
+        "task": "reverse_asin_B0B844T634",
+        "status": "OK",
+        "file": "ReverseASIN-US-B0B844T634-Last-30-days.xlsx"
+      },
+      {
+        "task": "reverse_asin_B0F38DRP6T",
+        "status": "OK",
+        "file": "ReverseASIN-US-B0F38DRP6T-Last-30-days.xlsx"
+      },
+      {
+        "task": "traffic_comparison",
+        "status": "OK",
+        "file": "CompareKeywords-US-B0D1XD1ZV3-260321-443495.xlsx"
+      },
+      {
+        "task": "keyword_research",
+        "status": "OK",
+        "file": "KeywordResearch-US-202602-443498.xlsx"
+      },
+      {
+        "task": "keyword_mining_airpods_pro",
+        "status": "OK",
+        "file": "KeywordMining-US-airpods-pro-Last-30-days-443503.xlsx"
+      },
+      {
+        "task": "keyword_mining_airpods_pro_wireless_earbuds",
+        "status": "OK",
+        "file": "KeywordMining-US-airpods-pro-wireless-earbuds-Last-30-days-443504.xlsx"
+      },
+      {
+        "task": "competitor_research",
+        "status": "OK",
+        "file": "Competitor-US-Last-30-days-443508.xlsx"
+      },
+      {
+        "task": "ads_insights_B0FBXVLLQF",
+        "status": "FAILED",
+        "error": "No results loaded"
+      },
+      {
+        "task": "ads_insights_B0B844T634",
+        "status": "OK",
+        "file": "AdsInsights-US-B0B844T634-443525.xlsx"
+      }
+    ],
+    "seller_central_results": [],
+    "succeeded": 10,
+    "failed": 1
+  },
+  {
+    "timestamp": "2026-03-21T08:29:11.972887",
+    "sellersprite_results": [
+      {
+        "task": "export_log_check",
+        "status": "OK",
+        "existing_count": 0,
+        "note": "Using direct download (no export log polling)"
+      },
+      {
+        "task": "reverse_asin_B00006JSUA",
+        "status": "OK",
+        "file": "ReverseASIN-US-B00006JSUA-Last-30-days.xlsx"
+      },
+      {
+        "task": "reverse_asin_B00G2XGC88",
+        "status": "OK",
+        "file": "ReverseASIN-US-B00G2XGC88-Last-30-days.xlsx"
+      },
+      {
+        "task": "reverse_asin_B00HWEIKZO",
+        "status": "OK",
+        "file": "ReverseASIN-US-B00HWEIKZO-Last-30-days.xlsx"
+      },
+      {
+        "task": "traffic_comparison",
+        "status": "OK",
+        "file": "CompareKeywords-US-B00006JSUA-260321-451871.xlsx"
+      },
+      {
+        "task": "keyword_research",
+        "status": "OK",
+        "file": "KeywordResearch-US-202602-451894.xlsx"
+      },
+      {
+        "task": "keyword_mining_seasoned_cast",
+        "status": "OK",
+        "file": "KeywordMining-US-seasoned-cast-Last-30-days-451904.xlsx"
+      },
+      {
+        "task": "keyword_mining_seasoned_cast_iron_skillet",
+        "status": "OK",
+        "file": "KeywordMining-US-seasoned-cast-iron-skillet-Last-30-days-451913.xlsx"
+      },
+      {
+        "task": "competitor_research",
+        "status": "OK",
+        "file": "Competitor-US-Last-30-days-451923.xlsx"
+      },
+      {
+        "task": "ads_insights_B0GF23LQCW",
+        "status": "OK",
+        "file": "AdsInsights-US-B0GF23LQCW-451937.xlsx"
+      },
+      {
+        "task": "ads_insights_B00G2XGC88",
+        "status": "OK",
+        "file": "AdsInsights-US-B00G2XGC88-451954.xlsx"
+      }
+    ],
+    "seller_central_results": [],
+    "succeeded": 11,
+    "failed": 0
+  },
+  {
+    "timestamp": "2026-03-21T08:57:32.124487",
+    "sellersprite_results": [
+      {
+        "task": "export_log_check",
+        "status": "OK",
+        "existing_count": 0,
+        "note": "Using direct download (no export log polling)"
+      },
+      {
+        "task": "reverse_asin_B00TTD9BRC",
+        "status": "OK",
+        "file": "ReverseASIN-US-B00TTD9BRC-Last-30-days.xlsx"
+      },
+      {
+        "task": "reverse_asin_B00365DABC",
+        "status": "OK",
+        "file": "ReverseASIN-US-B00365DABC-Last-30-days.xlsx"
+      },
+      {
+        "task": "reverse_asin_B09K47BT4H",
+        "status": "OK",
+        "file": "ReverseASIN-US-B09K47BT4H-Last-30-days.xlsx"
+      },
+      {
+        "task": "traffic_comparison",
+        "status": "OK",
+        "file": "CompareKeywords-US-B00TTD9BRC-260321-452050.xlsx"
+      },
+      {
+        "task": "keyword_research",
+        "status": "OK",
+        "file": "KeywordResearch-US-202602-452071.xlsx"
+      },
+      {
+        "task": "keyword_mining_moisturizing_cream",
+        "status": "OK",
+        "file": "KeywordMining-US-moisturizing-cream-Last-30-days-452088.xlsx"
+      },
+      {
+        "task": "keyword_mining_moisturizing_cream_body_face",
+        "status": "OK",
+        "file": "KeywordMining-US-moisturizing-cream-body-face-Last-30-days-452099.xlsx"
+      },
+      {
+        "task": "competitor_research",
+        "status": "FAILED",
+        "error": "Export failed \u2014 no download triggered after all attempts"
+      },
+      {
+        "task": "ads_insights_B0DN78GY9K",
+        "status": "FAILED",
+        "error": "Browser closed \u2014 aborting remaining tasks"
+      },
+      {
+        "task": "ads_insights_B00365DABC",
+        "status": "FAILED",
+        "error": "Browser closed \u2014 aborting remaining tasks"
+      }
+    ],
+    "seller_central_results": [],
+    "succeeded": 8,
+    "failed": 3
+  },
+  {
+    "timestamp": "2026-03-21T19:44:19.437785",
+    "sellersprite_results": [
+      {
+        "task": "export_log_check",
+        "status": "OK",
+        "existing_count": 0,
+        "note": "Using direct download (no export log polling)"
+      },
+      {
+        "task": "reverse_asin_B0CX511GQM",
+        "status": "FAILED",
+        "error": "Export failed \u2014 no download triggered after all attempts"
+      },
+      {
+        "task": "keyword_research",
+        "status": "FAILED",
+        "error": "All endpoints/retries exhausted"
+      },
+      {
+        "task": "competitor_research",
+        "status": "FAILED",
+        "error": "No results loaded"
+      },
+      {
+        "task": "ads_insights_B0CX511GQM",
+        "status": "FAILED",
+        "error": "No results loaded"
+      }
+    ],
+    "seller_central_results": [],
+    "succeeded": 1,
+    "failed": 4
+  },
+  {
+    "timestamp": "2026-03-21T20:20:04.455805",
+    "sellersprite_results": [
+      {
+        "task": "export_log_check",
+        "status": "OK",
+        "existing_count": 0,
+        "note": "Using direct download (no export log polling)"
+      },
+      {
+        "task": "reverse_asin_B0014C3W6Y",
+        "status": "FAILED",
+        "error": "Export failed \u2014 no download triggered after all attempts"
+      },
+      {
+        "task": "keyword_research",
+        "status": "FAILED",
+        "error": "All endpoints/retries exhausted"
+      },
+      {
+        "task": "competitor_research",
+        "status": "FAILED",
+        "error": "No results loaded"
+      },
+      {
+        "task": "ads_insights_B0014C3W6Y",
+        "status": "FAILED",
+        "error": "No results loaded"
+      }
+    ],
+    "seller_central_results": [],
+    "succeeded": 1,
+    "failed": 4
+  },
+  {
+    "timestamp": "2026-03-22T06:36:38.596098",
+    "sellersprite_results": [
+      {
+        "task": "export_log_check",
+        "status": "OK",
+        "existing_count": 0,
+        "note": "Using direct download (no export log polling)"
+      },
+      {
+        "task": "reverse_asin_B0B2MF7K5X",
+        "status": "OK",
+        "file": "ReverseASIN-US-B0B2MF7K5X-Last-30-days.xlsx"
+      },
+      {
+        "task": "keyword_research",
+        "status": "OK",
+        "file": "KeywordResearch-US-202602-456518.xlsx"
+      },
+      {
+        "task": "competitor_research",
+        "status": "OK",
+        "file": "Competitor-US-Last-30-days-456529.xlsx"
+      },
+      {
+        "task": "ads_insights_B0B2MF7K5X",
+        "status": "FAILED",
+        "error": "No results loaded"
+      }
+    ],
+    "seller_central_results": [],
+    "succeeded": 4,
+    "failed": 1
+  },
+  {
+    "timestamp": "2026-03-22T07:10:47.524934",
+    "sellersprite_results": [
+      {
+        "task": "export_log_check",
+        "status": "OK",
+        "existing_count": 0,
+        "note": "Using direct download (no export log polling)"
+      },
+      {
+        "task": "reverse_asin_B00PBX3L7K",
+        "status": "OK",
+        "file": "ReverseASIN-US-B00PBX3L7K-Last-30-days.xlsx"
+      },
+      {
+        "task": "reverse_asin_B01LEJ5MSK",
+        "status": "OK",
+        "file": "ReverseASIN-US-B01LEJ5MSK-Last-30-days.xlsx"
+      },
+      {
+        "task": "reverse_asin_B0DC156Y5X",
+        "status": "OK",
+        "file": "ReverseASIN-US-B0DC156Y5X-Last-30-days.xlsx"
+      },
+      {
+        "task": "traffic_comparison",
+        "status": "OK",
+        "file": "CompareKeywords-US-B00PBX3L7K-260322-456630.xlsx"
+      },
+      {
+        "task": "keyword_research",
+        "status": "OK",
+        "file": "KeywordResearch-US-202602-456656.xlsx"
+      },
+      {
+        "task": "keyword_mining_snail_mucin",
+        "status": "OK",
+        "file": "KeywordMining-US-snail-mucin-Last-30-days-456666.xlsx"
+      },
+      {
+        "task": "keyword_mining_snail_mucin_repairing_serum",
+        "status": "OK",
+        "file": "KeywordMining-US-snail-mucin-repairing-serum-Last-30-days-456678.xlsx"
+      },
+      {
+        "task": "competitor_research",
+        "status": "OK",
+        "file": "Competitor-US-Last-30-days-456684.xlsx"
+      },
+      {
+        "task": "ads_insights_B0D327SVBC",
+        "status": "OK",
+        "file": "AdsInsights-US-B0D327SVBC-456702.xlsx"
+      },
+      {
+        "task": "ads_insights_B01LEJ5MSK",
+        "status": "FAILED",
+        "error": "Export failed \u2014 no download triggered after all attempts"
+      }
+    ],
+    "seller_central_results": [],
+    "succeeded": 10,
+    "failed": 1
+  },
+  {
+    "timestamp": "2026-03-22T07:29:08.551734",
+    "sellersprite_results": [
+      {
+        "task": "export_log_check",
+        "status": "OK",
+        "existing_count": 0,
+        "note": "Using direct download (no export log polling)"
+      },
+      {
+        "task": "reverse_asin_B08PJ7JMQM",
+        "status": "OK",
+        "file": "ReverseASIN-US-B08PJ7JMQM-Last-30-days.xlsx"
+      },
+      {
+        "task": "reverse_asin_B0BKQDPP1Z",
+        "status": "OK",
+        "file": "ReverseASIN-US-B0BKQDPP1Z-Last-30-days.xlsx"
+      },
+      {
+        "task": "reverse_asin_B00TXI1NEW",
+        "status": "OK",
+        "file": "ReverseASIN-US-B00TXI1NEW-Last-30-days.xlsx"
+      },
+      {
+        "task": "traffic_comparison",
+        "status": "OK",
+        "file": "CompareKeywords-US-B08PJ7JMQM-260322-456824.xlsx"
+      },
+      {
+        "task": "keyword_research",
+        "status": "FAILED",
+        "error": "Export failed \u2014 no download triggered after all attempts"
+      },
+      {
+        "task": "keyword_mining_clip_portable",
+        "status": "FAILED",
+        "error": "Browser closed \u2014 aborting remaining tasks"
+      },
+      {
+        "task": "keyword_mining_clip_portable_mini_bluetooth",
+        "status": "FAILED",
+        "error": "Browser closed \u2014 aborting remaining tasks"
+      },
+      {
+        "task": "competitor_research",
+        "status": "FAILED",
+        "error": "Browser closed \u2014 aborting remaining tasks"
+      },
+      {
+        "task": "ads_insights_B0D9HYSZ3F",
+        "status": "FAILED",
+        "error": "Browser closed \u2014 aborting remaining tasks"
+      },
+      {
+        "task": "ads_insights_B0BKQDPP1Z",
+        "status": "FAILED",
+        "error": "Browser closed \u2014 aborting remaining tasks"
+      }
+    ],
+    "seller_central_results": [],
+    "succeeded": 5,
+    "failed": 6
+  },
+  {
+    "timestamp": "2026-03-22T12:24:45.839209",
+    "sellersprite_results": [
+      {
+        "task": "export_log_check",
+        "status": "OK",
+        "existing_count": 0,
+        "note": "Using direct download (no export log polling)"
+      },
+      {
+        "task": "reverse_asin_B001EVB4VU",
+        "status": "OK",
+        "file": "ReverseASIN-US-B001EVB4VU-Last-30-days.xlsx"
+      },
+      {
+        "task": "keyword_research",
+        "status": "OK",
+        "file": "KeywordResearch-US-202602-458785.xlsx"
+      },
+      {
+        "task": "competitor_research",
+        "status": "OK",
+        "file": "Competitor-US-Last-30-days-458789.xlsx"
+      },
+      {
+        "task": "ads_insights_B001EVB4VU",
+        "status": "FAILED",
+        "error": "No results loaded"
+      }
+    ],
+    "seller_central_results": [],
+    "succeeded": 4,
+    "failed": 1
+  },
+  {
+    "timestamp": "2026-03-22T12:42:28.591884",
+    "sellersprite_results": [
+      {
+        "task": "export_log_check",
+        "status": "OK",
+        "existing_count": 0,
+        "note": "Using direct download (no export log polling)"
+      },
+      {
+        "task": "reverse_asin_B0B3PSQHD5",
+        "status": "OK",
+        "file": "ReverseASIN-US-B0B3PSQHD5-Last-30-days.xlsx"
+      },
+      {
+        "task": "keyword_research",
+        "status": "OK",
+        "file": "KeywordResearch-US-202602-458852.xlsx"
+      },
+      {
+        "task": "competitor_research",
+        "status": "FAILED",
+        "error": "Export failed \u2014 no download triggered after all attempts"
+      },
+      {
+        "task": "ads_insights_B0B3PSQHD5",
+        "status": "FAILED",
+        "error": "No results loaded"
+      }
+    ],
+    "seller_central_results": [],
+    "succeeded": 3,
+    "failed": 2
+  },
+  {
+    "timestamp": "2026-03-22T13:10:29.716064",
+    "sellersprite_results": [
+      {
+        "task": "export_log_check",
+        "status": "OK",
+        "existing_count": 0,
+        "note": "Using direct download (no export log polling)"
+      },
+      {
+        "task": "reverse_asin_B085NFXXKH",
+        "status": "OK",
+        "file": "ReverseASIN-US-B085NFXXKH-Last-30-days.xlsx"
+      },
+      {
+        "task": "reverse_asin_B07JMSMMLP",
+        "status": "OK",
+        "file": "ReverseASIN-US-B07JMSMMLP-Last-30-days.xlsx"
+      },
+      {
+        "task": "reverse_asin_B081PGKL1Z",
+        "status": "OK",
+        "file": "ReverseASIN-US-B081PGKL1Z-Last-30-days.xlsx"
+      },
+      {
+        "task": "traffic_comparison",
+        "status": "OK",
+        "file": "CompareKeywords-US-B085NFXXKH-260323-458942.xlsx"
+      },
+      {
+        "task": "keyword_research",
+        "status": "OK",
+        "file": "KeywordResearch-US-202602-458965.xlsx"
+      },
+      {
+        "task": "keyword_mining_19mm_mulberry",
+        "status": "OK",
+        "file": "KeywordMining-US-19mm-mulberry-Last-30-days-458979.xlsx"
+      },
+      {
+        "task": "keyword_mining_19mm_mulberry_men",
+        "status": "OK",
+        "file": "KeywordMining-US-19mm-mulberry-men-Last-30-days-458984.xlsx"
+      },
+      {
+        "task": "keyword_mining_mulberry_pajama",
+        "status": "OK",
+        "file": "KeywordMining-US-mulberry-pajama-Last-30-days-458986.xlsx"
+      },
+      {
+        "task": "competitor_research",
+        "status": "OK",
+        "file": "Competitor-US-Last-30-days-458995.xlsx"
+      },
+      {
+        "task": "ads_insights_B085NG1J94",
+        "status": "OK",
+        "file": "AdsInsights-US-B085NG1J94-459016.xlsx"
+      },
+      {
+        "task": "ads_insights_B07JMSMMLP",
+        "status": "OK",
+        "file": "AdsInsights-US-B07JMSMMLP-459034.xlsx"
+      }
+    ],
+    "seller_central_results": [],
+    "succeeded": 12,
+    "failed": 0
+  },
+  {
+    "timestamp": "2026-03-22T18:22:38.198098",
+    "sellersprite_results": [
+      {
+        "task": "export_log_check",
+        "status": "OK",
+        "existing_count": 0,
+        "note": "Using direct download (no export log polling)"
+      },
+      {
+        "task": "reverse_asin_B085NF8T9V",
+        "status": "OK",
+        "file": "ReverseASIN-US-B085NF8T9V-Last-30-days.xlsx"
+      },
+      {
+        "task": "reverse_asin_B07KRXK637",
+        "status": "OK",
+        "file": "ReverseASIN-US-B07KRXK637-Last-30-days.xlsx"
+      },
+      {
+        "task": "reverse_asin_B0DS11JGXM",
+        "status": "OK",
+        "file": "ReverseASIN-US-B0DS11JGXM-Last-30-days.xlsx"
+      },
+      {
+        "task": "traffic_comparison",
+        "status": "OK",
+        "file": "CompareKeywords-US-B085NFXXKH-260323-458942.xlsx"
+      },
+      {
+        "task": "keyword_research",
+        "status": "OK",
+        "file": "KeywordResearch-US-202602-459500.xlsx"
+      },
+      {
+        "task": "keyword_mining_womens_19mm",
+        "status": "OK",
+        "file": "KeywordMining-US-womens-19mm-Last-30-days-459506.xlsx"
+      },
+      {
+        "task": "keyword_mining_womens_19mm_mulberry_silk",
+        "status": "OK",
+        "file": "KeywordMining-US-womens-19mm-mulberry-silk-Last-30-days-459513.xlsx"
+      },
+      {
+        "task": "competitor_research",
+        "status": "OK",
+        "file": "Competitor-US-Last-30-days-459517.xlsx"
+      },
+      {
+        "task": "ads_insights_B085NF8T9V",
+        "status": "OK",
+        "file": "AdsInsights-US-B085NF8T9V-459521.xlsx"
+      },
+      {
+        "task": "ads_insights_B07KRXK637",
+        "status": "FAILED",
+        "error": "No results loaded"
+      }
+    ],
+    "seller_central_results": [],
+    "succeeded": 10,
+    "failed": 1
+  },
+  {
+    "timestamp": "2026-03-22T18:52:17.802955",
+    "sellersprite_results": [
+      {
+        "task": "export_log_check",
+        "status": "OK",
+        "existing_count": 0,
+        "note": "Using direct download (no export log polling)"
+      },
+      {
+        "task": "reverse_asin_B07HT7KFXN",
+        "status": "OK",
+        "file": "ReverseASIN-US-B07HT7KFXN-Last-30-days.xlsx"
+      },
+      {
+        "task": "reverse_asin_B00HT6E2NY",
+        "status": "OK",
+        "file": "ReverseASIN-US-B00HT6E2NY-Last-30-days.xlsx"
+      },
+      {
+        "task": "reverse_asin_B00HT6E2JI",
+        "status": "OK",
+        "file": "ReverseASIN-US-B00HT6E2JI-Last-30-days.xlsx"
+      },
+      {
+        "task": "traffic_comparison",
+        "status": "FAILED",
+        "error": "Export failed \u2014 no download triggered after all attempts"
+      },
+      {
+        "task": "keyword_research",
+        "status": "OK",
+        "file": "KeywordResearch-US-202602-459549.xlsx"
+      },
+      {
+        "task": "keyword_mining_women's_silk",
+        "status": "OK",
+        "file": "KeywordMining-US-women's-silk-Last-30-days-459552.xlsx"
+      },
+      {
+        "task": "keyword_mining_silk_robe",
+        "status": "OK",
+        "file": "KeywordMining-US-silk-robe-Last-30-days-459557.xlsx"
+      },
+      {
+        "task": "competitor_research",
+        "status": "OK",
+        "file": "Competitor-US-Last-30-days-459562.xlsx"
+      },
+      {
+        "task": "ads_insights_B07HT7KFXN",
+        "status": "OK",
+        "file": "AdsInsights-US-B07HT7KFXN-459569.xlsx"
+      },
+      {
+        "task": "ads_insights_B00HT6E2NY",
+        "status": "OK",
+        "file": "AdsInsights-US-B00HT6E2NY-459573.xlsx"
+      }
+    ],
+    "seller_central_results": [],
+    "succeeded": 10,
+    "failed": 1
+  },
+  {
+    "timestamp": "2026-03-22T19:40:20.499210",
+    "sellersprite_results": [
+      {
+        "task": "export_log_check",
+        "status": "OK",
+        "existing_count": 0,
+        "note": "Using direct download (no export log polling)"
+      },
+      {
+        "task": "reverse_asin_B094PZTFMB",
+        "status": "OK",
+        "file": "ReverseASIN-US-B094PZTFMB-Last-30-days.xlsx"
+      },
+      {
+        "task": "reverse_asin_B01G9M4QRU",
+        "status": "OK",
+        "file": "ReverseASIN-US-B01G9M4QRU-Last-30-days.xlsx"
+      },
+      {
+        "task": "reverse_asin_B07BVV8ZNQ",
+        "status": "OK",
+        "file": "ReverseASIN-US-B07BVV8ZNQ-Last-30-days.xlsx"
+      },
+      {
+        "task": "traffic_comparison",
+        "status": "FAILED",
+        "error": "Export failed \u2014 no download triggered after all attempts"
+      },
+      {
+        "task": "keyword_research",
+        "status": "FAILED",
+        "error": "Export failed \u2014 no download triggered after all attempts"
+      },
+      {
+        "task": "keyword_mining_men's_silk",
+        "status": "OK",
+        "file": "KeywordMining-US-men's-silk-Last-30-days-459612.xlsx"
+      },
+      {
+        "task": "keyword_mining_men's_silk_boxers_mulberry",
+        "status": "OK",
+        "file": "KeywordMining-US-men's-silk-boxers-mulberry-Last-30-days-459615.xlsx"
+      },
+      {
+        "task": "competitor_research",
+        "status": "OK",
+        "file": "Competitor-US-Last-30-days-459622.xlsx"
+      },
+      {
+        "task": "ads_insights_B094PZTFMB",
+        "status": "OK",
+        "file": "AdsInsights-US-B094PZTFMB-459634.xlsx"
+      },
+      {
+        "task": "ads_insights_B01G9M4QRU",
+        "status": "OK",
+        "file": "AdsInsights-US-B01G9M4QRU-459642.xlsx"
+      }
+    ],
+    "seller_central_results": [],
+    "succeeded": 9,
+    "failed": 2
+  }
+]
