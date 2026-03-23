@@ -1,7 +1,8 @@
 #!/bin/bash
 # ECOMMERCEAUTOMATION — One-time setup (idempotent — safe to re-run)
 set -e
-PROJECT="$HOME/Desktop/ECOMMERCEAUTOMATION"
+# Use script's own directory as project root (works on any machine)
+PROJECT="$(cd "$(dirname "$0")" && pwd)"
 echo "🚀 Setting up: $PROJECT"
 
 # Create full directory structure

@@ -1,19 +1,20 @@
 # =============================================================================
-# ECOMMERCEAUTOMATION — Multi-stage Docker build
-# Python 3.11 (data pipeline) + Node.js 20 (Next.js dashboard)
+# 肯葳科技亚马逊自动运营系统 — Docker Build
+# Python 3.11 + Node.js 20 + Playwright/Chromium
+# Supports: Mac (Intel/Apple Silicon), Windows, Linux
 # =============================================================================
 
 # ---------------------------------------------------------------------------
-# Stage 1: Python base with Node.js
+# Stage 1: Python + Node.js base
 # ---------------------------------------------------------------------------
 FROM python:3.11-slim AS base
 
-# Install Node.js 20, system deps for Playwright/Chromium, and general utilities
+# Install Node.js 20 + system deps for Playwright/Chromium + Chinese fonts
 RUN apt-get update && apt-get install -y --no-install-recommends \
     curl \
     gnupg \
     ca-certificates \
-    # Playwright/Chromium dependencies
+    # Playwright/Chromium runtime dependencies
     libnss3 \
     libatk1.0-0 \
     libatk-bridge2.0-0 \
@@ -30,6 +31,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libasound2 \
     libatspi2.0-0 \
     libwayland-client0 \
+    # Chinese font support (for Excel/PDF reports)
     fonts-noto-cjk \
     && curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y --no-install-recommends nodejs \
@@ -42,7 +44,7 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Install Playwright and Chromium browser
+# Install Playwright Chromium browser
 RUN playwright install chromium \
     && playwright install-deps chromium 2>/dev/null || true
 
@@ -54,12 +56,12 @@ FROM base AS dashboard-builder
 WORKDIR /app/dashboard
 
 COPY dashboard/package.json dashboard/package-lock.json* ./
-RUN npm install --production=false
+RUN npm ci --production=false 2>/dev/null || npm install --production=false
 
 COPY dashboard/ .
 
-# Copy processed data so next build can resolve static imports if needed
-COPY processed/ /app/processed/
+# Create empty processed dir so build doesn't fail on missing imports
+RUN mkdir -p /app/processed
 
 RUN npm run build
 
@@ -70,19 +72,19 @@ FROM base AS final
 
 WORKDIR /app
 
-# Copy the entire project source
+# Copy Python scripts and project files
 COPY scripts/ ./scripts/
-COPY config.json* ./
+COPY config.json ./config.json
 COPY data_schemas.md* ./
 COPY setup.sh* ./
 COPY CLAUDE.md* ./
 
 # Create directory structure
-RUN mkdir -p inputs/sellersprite inputs/seller-central inputs/product-costs \
+RUN mkdir -p inputs/sellersprite inputs/seller-central \
     processed outputs logs data \
     dashboard/app dashboard/public
 
-# Copy built dashboard from stage 2
+# Copy built dashboard from builder stage
 COPY --from=dashboard-builder /app/dashboard/package.json /app/dashboard/
 COPY --from=dashboard-builder /app/dashboard/package-lock.json* /app/dashboard/
 COPY --from=dashboard-builder /app/dashboard/node_modules/ /app/dashboard/node_modules/
@@ -99,7 +101,9 @@ ENV NODE_ENV=production \
 
 EXPOSE 3000
 
-HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
-    CMD curl -f http://localhost:3000/ || exit 1
+# Health check — verify dashboard is responding
+HEALTHCHECK --interval=30s --timeout=10s --start-period=20s --retries=3 \
+    CMD curl -sf http://localhost:3000/api/status || exit 1
 
-CMD ["sh", "-c", "cd /app/dashboard && npm run dev"]
+# Start the dashboard (production mode)
+CMD ["sh", "-c", "cd /app/dashboard && npm start"]

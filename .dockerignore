@@ -36,6 +36,17 @@ __pycache__/
 *.swp
 *.swo
 
+# Runtime data (mounted as volumes, not baked into image)
+data/
+outputs/
+logs/
+
+# Wiki (not needed in container)
+wiki/
+
+# Windows
+Thumbs.db
+
 # Docker (avoid recursive context)
 Dockerfile
 docker-compose.yml
