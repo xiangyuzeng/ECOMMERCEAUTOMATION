@@ -43,18 +43,29 @@ from scripts.processors.ads import build_ads_monitoring
 from scripts.processors.traffic import build_traffic_sources
 from scripts.exporters.excel_writer import write_workbook
 from scripts.exporters.json_writer import write_json_files
+from scripts.config_manager import get_product_config, get_product_paths, update_product_stats, get_active_product_id
 
 
-def load_config():
+def load_config(product_id=None):
+    """Load config - from data/{product_id}/config.json if product_id given, else root config.json."""
+    if product_id:
+        from scripts.config_manager import get_product_config
+        return get_product_config(product_id)
     config_path = os.path.join(PROJECT_ROOT, 'config.json')
     with open(config_path, 'r', encoding='utf-8') as f:
         return json.load(f)
 
 
-def classify_files(config):
+def classify_files(config, product_id=None):
     """Scan inputs/ and classify files by pattern."""
-    ss_dir = os.path.join(PROJECT_ROOT, 'inputs', 'sellersprite')
-    sc_dir = os.path.join(PROJECT_ROOT, 'inputs', 'seller-central')
+    if product_id:
+        from scripts.config_manager import get_product_paths
+        paths = get_product_paths(product_id)
+        ss_dir = paths['inputs_sellersprite']
+        sc_dir = paths['inputs_seller_central']
+    else:
+        ss_dir = os.path.join(PROJECT_ROOT, 'inputs', 'sellersprite')
+        sc_dir = os.path.join(PROJECT_ROOT, 'inputs', 'seller-central')
 
     ignore_list = config.get('sellersprite_files', {}).get('ignore', [])
 
@@ -113,7 +124,7 @@ def classify_files(config):
     return files
 
 
-def run_pipeline():
+def run_pipeline(product_id=None):
     """Execute full pipeline."""
     start_time = datetime.now()
     logger.info("=" * 60)
@@ -126,7 +137,7 @@ def run_pipeline():
 
     # 1. Load config
     try:
-        config = load_config()
+        config = load_config(product_id=product_id)
         brand = config.get('active_product', {}).get('brand', '') or 'PRODUCT'
         logger.info(f"✓ Config loaded — brand: {brand}")
     except Exception as e:
@@ -134,7 +145,7 @@ def run_pipeline():
         return
 
     # 2. Classify files
-    files = classify_files(config)
+    files = classify_files(config, product_id=product_id)
     for cat, fps in files.items():
         logger.info(f"  {cat}: {len(fps)} files")
 
@@ -416,10 +427,18 @@ def run_pipeline():
 
     # 6. Export Excel
     logger.info("--- Exporting ---")
-    os.makedirs(os.path.join(PROJECT_ROOT, 'outputs'), exist_ok=True)
+    if product_id:
+        from scripts.config_manager import get_product_paths
+        paths = get_product_paths(product_id)
+        outputs_dir = paths['outputs']
+        processed_dir = paths['processed']
+    else:
+        outputs_dir = os.path.join(PROJECT_ROOT, 'outputs')
+        processed_dir = os.path.join(PROJECT_ROOT, 'processed')
+    os.makedirs(outputs_dir, exist_ok=True)
     today = datetime.now().strftime('%Y-%m-%d')
     brand_slug = brand.replace(' ', '_')
-    excel_path = os.path.join(PROJECT_ROOT, 'outputs', f'{brand_slug}_运营方案_{today}.xlsx')
+    excel_path = os.path.join(outputs_dir, f'{brand_slug}_运营方案_{today}.xlsx')
 
     try:
         write_workbook(
@@ -434,7 +453,6 @@ def run_pipeline():
         errors.append(f"excel: {e}")
 
     # 7. Export JSON
-    processed_dir = os.path.join(PROJECT_ROOT, 'processed')
     try:
         json_files = write_json_files(
             processed_dir, competitor_matrix, keyword_library,
@@ -447,7 +465,7 @@ def run_pipeline():
         errors.append(f"json: {e}")
 
     # 8. Write run summary
-    summary_path = os.path.join(PROJECT_ROOT, 'outputs', 'run_summary.md')
+    summary_path = os.path.join(outputs_dir, 'run_summary.md')
     try:
         _write_summary(summary_path, results, errors, file_log, config, start_time)
         logger.info(f"✓ Summary: {summary_path}")
@@ -460,10 +478,25 @@ def run_pipeline():
             config['last_run'] = datetime.now().isoformat()
         else:
             config['last_run_partial'] = datetime.now().isoformat()
-        with open(os.path.join(PROJECT_ROOT, 'config.json'), 'w', encoding='utf-8') as f:
-            json.dump(config, f, ensure_ascii=False, indent=2)
+        if product_id:
+            from scripts.config_manager import save_product_config
+            save_product_config(product_id, config)
+        else:
+            with open(os.path.join(PROJECT_ROOT, 'config.json'), 'w', encoding='utf-8') as f:
+                json.dump(config, f, ensure_ascii=False, indent=2)
     except Exception:
         pass
+
+    # Update product stats after successful pipeline
+    if product_id:
+        try:
+            from scripts.config_manager import update_product_stats
+            update_product_stats(product_id,
+                last_pipeline=datetime.now().isoformat(),
+                keywords_count=len(keyword_library) if keyword_library else 0,
+            )
+        except Exception:
+            pass
 
     # 10. Print completion
     elapsed = (datetime.now() - start_time).total_seconds()
@@ -522,4 +555,9 @@ def _write_summary(path, results, errors, file_log, config, start_time):
 
 
 if __name__ == '__main__':
-    run_pipeline()
+    import argparse
+    parser = argparse.ArgumentParser(description='Generate operations report')
+    parser.add_argument('--product-id', type=str, default=None,
+                        help='Product ID for multi-product mode (loads from data/{product_id}/)')
+    args = parser.parse_args()
+    run_pipeline(product_id=args.product_id)

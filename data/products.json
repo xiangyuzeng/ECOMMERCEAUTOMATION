@@ -1,0 +1,31 @@
+{
+  "products": [
+    {
+      "id": "B094PZTFMB",
+      "asin": "B094PZTFMB",
+      "brand": "COLD POSH",
+      "title": "COLD POSH Men's Silk Boxers Luxury Mulberry Silk Underwear, Smooth Loungewear Shorts",
+      "price": 39.98,
+      "category": "Clothing, Shoes & Jewelry > Men > Clothing > Underwear > Boxers",
+      "created_at": "2026-03-23T02:26:30.240007",
+      "last_collection": null,
+      "last_pipeline": "2026-03-23T02:26:30.379746",
+      "keywords_count": 829,
+      "status": "active"
+    },
+    {
+      "id": "B085NFXXKH",
+      "asin": "B085NFXXKH",
+      "brand": "COLD POSH",
+      "title": "",
+      "price": null,
+      "category": "",
+      "created_at": "2026-03-23T02:38:54.207260",
+      "last_collection": null,
+      "last_pipeline": null,
+      "keywords_count": 0,
+      "status": "active"
+    }
+  ],
+  "active_product_id": "B094PZTFMB"
+}

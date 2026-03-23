@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ecommerceautomation
+    restart: unless-stopped
+
+    # Host networking so the container can reach AdsPower on localhost:50325
+    network_mode: host
+
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - PORT=${PORT:-3000}
+      - ADSPOWER_API_URL=${ADSPOWER_API_URL:-http://localhost:50325}
+      - ADSPOWER_API_KEY=${ADSPOWER_API_KEY:-}
+      - ADSPOWER_PROFILE_ID=${ADSPOWER_PROFILE_ID:-}
+
+    volumes:
+      # Primary data volume
+      - ./data:/app/data
+
+      # Configuration (live-reloadable)
+      - ./config.json:/app/config.json:ro
+
+      # Input/output mounts (backward compatibility with non-Docker workflow)
+      - ./inputs:/app/inputs
+      - ./outputs:/app/outputs
+      - ./processed:/app/processed
+      - ./logs:/app/logs

@@ -1,12 +1,36 @@
 import { NextResponse } from 'next/server';
 import { readFile } from 'fs/promises';
 import path from 'path';
+import fs from 'fs';
 
 const PROJECT_ROOT = path.resolve(process.cwd(), '..');
 
-export async function GET() {
+function getConfigPath(productId) {
+  if (productId) {
+    const productConfig = path.join(PROJECT_ROOT, 'data', productId, 'config.json');
+    if (fs.existsSync(productConfig)) return productConfig;
+  }
+  // Check active product
+  const productsFile = path.join(PROJECT_ROOT, 'data', 'products.json');
+  if (fs.existsSync(productsFile)) {
+    try {
+      const products = JSON.parse(fs.readFileSync(productsFile, 'utf-8'));
+      if (products.active_product_id) {
+        const activeConfig = path.join(PROJECT_ROOT, 'data', products.active_product_id, 'config.json');
+        if (fs.existsSync(activeConfig)) return activeConfig;
+      }
+    } catch (e) {}
+  }
+  return path.join(PROJECT_ROOT, 'config.json');
+}
+
+export async function GET(request) {
   try {
-    const config = JSON.parse(await readFile(path.join(PROJECT_ROOT, 'config.json'), 'utf-8'));
+    const { searchParams } = new URL(request.url);
+    const productId = searchParams.get('product_id');
+    const configPath = getConfigPath(productId);
+
+    const config = JSON.parse(await readFile(configPath, 'utf-8'));
     const product = config.active_product || {};
     const competitors = config.competitors || {};
     const seeds = config.seed_keywords || [];

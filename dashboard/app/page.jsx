@@ -1951,8 +1951,71 @@ function UploadTab({ onRefresh }) {
 
 export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('control');
-  const { competitors, keywords, ads, pricing, traffic, gapAnalysis, loading, error, refresh } = useData();
   const [productInfo, setProductInfo] = useState(null);
+
+  // Product selector state
+  const [products, setProducts] = useState([]);
+  const [activeProductId, setActiveProductId] = useState(null);
+  const [showProductSelector, setShowProductSelector] = useState(false);
+  const [newProductAsin, setNewProductAsin] = useState('');
+  const [addingProduct, setAddingProduct] = useState(false);
+
+  const { competitors, keywords, ads, pricing, traffic, gapAnalysis, loading, error, refresh } = useData(activeProductId);
+
+  // Fetch product list
+  useEffect(() => {
+    fetch('/api/products')
+      .then(r => r.json())
+      .then(data => {
+        setProducts(data.products || []);
+        setActiveProductId(data.active_product_id);
+      })
+      .catch(() => {});
+  }, []);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    if (!showProductSelector) return;
+    const handleClickOutside = () => setShowProductSelector(false);
+    const timer = setTimeout(() => document.addEventListener('click', handleClickOutside), 0);
+    return () => {
+      clearTimeout(timer);
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [showProductSelector]);
+
+  // Product switch handler
+  const switchProduct = async (productId) => {
+    setActiveProductId(productId);
+    setShowProductSelector(false);
+    await fetch('/api/products', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'set_active', product_id: productId }),
+    });
+    window.location.reload();
+  };
+
+  // Add new product handler
+  const addProduct = async () => {
+    if (!newProductAsin.trim()) return;
+    setAddingProduct(true);
+    try {
+      await fetch('/api/products', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'create', asin: newProductAsin.trim() }),
+      });
+      const res = await fetch('/api/products');
+      const data = await res.json();
+      setProducts(data.products || []);
+      setActiveProductId(data.active_product_id);
+      setNewProductAsin('');
+    } catch (e) {
+      console.error('Failed to add product:', e);
+    }
+    setAddingProduct(false);
+  };
 
   // Fetch product info from config for dynamic header
   const fetchConfig = useCallback(async () => {
@@ -2006,6 +2069,150 @@ export default function Dashboard() {
           <div>{competitors?.length || 0} 竞品</div>
           <div>{gapAnalysis?.length || 0} 差距关键词</div>
         </div>
+      </div>
+
+      {/* Product Selector Bar */}
+      <div style={{
+        padding: '8px 24px',
+        background: '#ffffff',
+        borderRadius: 10,
+        marginBottom: 16,
+        boxShadow: '0 1px 3px rgba(0,0,0,0.08)',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px',
+      }}>
+        <span style={{ fontSize: '13px', color: '#6b7280', fontWeight: 500, fontFamily: "'Noto Sans SC', sans-serif" }}>
+          产品 Product:
+        </span>
+
+        {/* Current product chip / dropdown trigger */}
+        <div
+          onClick={(e) => { e.stopPropagation(); setShowProductSelector(!showProductSelector); }}
+          style={{
+            position: 'relative',
+            padding: '6px 32px 6px 12px',
+            background: '#f0f7ff',
+            border: '1px solid #0365C0',
+            borderRadius: '6px',
+            cursor: 'pointer',
+            fontSize: '13px',
+            color: '#1f2937',
+            fontWeight: 500,
+          }}
+        >
+          {(() => {
+            const active = products.find(p => p.id === activeProductId);
+            return active
+              ? `${active.brand || active.asin} — ${active.asin}`
+              : (brand && asin ? `${brand} — ${asin}` : brand || asin || 'No product selected');
+          })()}
+          <span style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', fontSize: '10px', color: '#6b7280' }}>
+            {showProductSelector ? '\u25B2' : '\u25BC'}
+          </span>
+
+          {/* Dropdown */}
+          {showProductSelector && (
+            <div
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                position: 'absolute',
+                top: '100%',
+                left: 0,
+                marginTop: '4px',
+                background: '#ffffff',
+                border: '1px solid #e5e7eb',
+                borderRadius: '8px',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.12)',
+                zIndex: 1000,
+                minWidth: '320px',
+                maxHeight: '300px',
+                overflowY: 'auto',
+              }}
+            >
+              {products.length === 0 && (
+                <div style={{ padding: '12px 16px', fontSize: '13px', color: '#9ca3af' }}>
+                  No products found
+                </div>
+              )}
+              {products.map(p => (
+                <div
+                  key={p.id}
+                  onClick={() => switchProduct(p.id)}
+                  style={{
+                    padding: '10px 16px',
+                    cursor: 'pointer',
+                    borderBottom: '1px solid #f3f4f6',
+                    background: p.id === activeProductId ? '#f0f7ff' : '#ffffff',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    transition: 'background 0.15s',
+                  }}
+                  onMouseEnter={e => { if (p.id !== activeProductId) e.currentTarget.style.background = '#f9fafb'; }}
+                  onMouseLeave={e => { if (p.id !== activeProductId) e.currentTarget.style.background = '#ffffff'; }}
+                >
+                  <div>
+                    <div style={{ fontWeight: 500, fontSize: '13px', color: '#1f2937' }}>
+                      {p.brand || 'Unknown'} — {p.asin}
+                    </div>
+                    <div style={{ fontSize: '11px', color: '#9ca3af', marginTop: '2px' }}>
+                      {p.title ? (p.title.length > 50 ? p.title.substring(0, 50) + '...' : p.title) : 'No title'}
+                    </div>
+                  </div>
+                  {p.id === activeProductId && (
+                    <span style={{ fontSize: '11px', color: '#0365C0', fontWeight: 600 }}>Active</span>
+                  )}
+                </div>
+              ))}
+
+              {/* Add new product input */}
+              <div style={{ padding: '10px 16px', borderTop: '2px solid #e5e7eb' }}>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <input
+                    type="text"
+                    value={newProductAsin}
+                    onChange={e => setNewProductAsin(e.target.value)}
+                    onClick={e => e.stopPropagation()}
+                    placeholder="Enter ASIN (e.g. B094PZTFMB)"
+                    style={{
+                      flex: 1,
+                      padding: '6px 10px',
+                      border: '1px solid #d1d5db',
+                      borderRadius: '4px',
+                      fontSize: '12px',
+                      outline: 'none',
+                    }}
+                    onKeyDown={e => { if (e.key === 'Enter') addProduct(); }}
+                  />
+                  <button
+                    onClick={addProduct}
+                    disabled={addingProduct}
+                    style={{
+                      padding: '6px 12px',
+                      background: '#0365C0',
+                      color: '#ffffff',
+                      border: 'none',
+                      borderRadius: '4px',
+                      fontSize: '12px',
+                      cursor: addingProduct ? 'wait' : 'pointer',
+                      fontWeight: 500,
+                      opacity: addingProduct ? 0.6 : 1,
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {addingProduct ? '...' : '+ Add'}
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Product count badge */}
+        <span style={{ fontSize: '11px', color: '#9ca3af' }}>
+          {products.length} product{products.length !== 1 ? 's' : ''}
+        </span>
       </div>
 
       {error && (

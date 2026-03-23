@@ -1,8 +1,46 @@
 import { NextResponse } from 'next/server';
 import { readdir, readFile, stat } from 'fs/promises';
 import path from 'path';
+import fs from 'fs';
 
 const PROJECT_ROOT = path.resolve(process.cwd(), '..');
+
+function resolveActiveProductId() {
+  const productsFile = path.join(PROJECT_ROOT, 'data', 'products.json');
+  if (fs.existsSync(productsFile)) {
+    try {
+      const products = JSON.parse(fs.readFileSync(productsFile, 'utf-8'));
+      return products.active_product_id || null;
+    } catch (e) {}
+  }
+  return null;
+}
+
+function getInputDirs(productId) {
+  if (productId) {
+    const productDir = path.join(PROJECT_ROOT, 'data', productId);
+    const ssDir = path.join(productDir, 'inputs', 'sellersprite');
+    const scDir = path.join(productDir, 'inputs', 'seller-central');
+    const processedDir = path.join(productDir, 'processed');
+    if (fs.existsSync(ssDir) || fs.existsSync(scDir) || fs.existsSync(processedDir)) {
+      return { ssDir, scDir, processedDir };
+    }
+  }
+  // Fallback to root dirs
+  return {
+    ssDir: path.join(PROJECT_ROOT, 'inputs', 'sellersprite'),
+    scDir: path.join(PROJECT_ROOT, 'inputs', 'seller-central'),
+    processedDir: path.join(PROJECT_ROOT, 'processed'),
+  };
+}
+
+function getConfigPath(productId) {
+  if (productId) {
+    const productConfig = path.join(PROJECT_ROOT, 'data', productId, 'config.json');
+    if (fs.existsSync(productConfig)) return productConfig;
+  }
+  return path.join(PROJECT_ROOT, 'config.json');
+}
 
 async function listDir(dir) {
   try {
@@ -19,16 +57,22 @@ async function listDir(dir) {
   }
 }
 
-export async function GET() {
-  const sellersprite = await listDir(path.join(PROJECT_ROOT, 'inputs', 'sellersprite'));
-  const sellerCentral = await listDir(path.join(PROJECT_ROOT, 'inputs', 'seller-central'));
-  const processed = await listDir(path.join(PROJECT_ROOT, 'processed'));
+export async function GET(request) {
+  const { searchParams } = new URL(request.url);
+  const productId = searchParams.get('product_id') || resolveActiveProductId();
+
+  const { ssDir, scDir, processedDir } = getInputDirs(productId);
+  const configPath = getConfigPath(productId);
+
+  const sellersprite = await listDir(ssDir);
+  const sellerCentral = await listDir(scDir);
+  const processed = await listDir(processedDir);
 
   let lastRun = null;
   let ignoreList = [];
   let adspower = {};
   try {
-    const config = JSON.parse(await readFile(path.join(PROJECT_ROOT, 'config.json'), 'utf-8'));
+    const config = JSON.parse(await readFile(configPath, 'utf-8'));
     lastRun = config.last_run || null;
     ignoreList = config.sellersprite_files?.ignore || [];
     adspower = config.adspower || {};
@@ -49,6 +93,7 @@ export async function GET() {
     lastRun,
     ignoreList,
     adspower,
+    product_id: productId,
     inputFiles: { sellersprite: ssFiltered, sellerCentral },
     processedFiles: processed,
   }, {

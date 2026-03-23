@@ -1,0 +1,42 @@
+# Dependencies (rebuilt inside container)
+node_modules/
+dashboard/node_modules/
+
+# Next.js build artifacts (rebuilt inside container)
+.next/
+dashboard/.next/
+out/
+dashboard/out/
+
+# Python cache
+__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+
+# Git
+.git/
+.gitignore
+
+# Claude Code
+.claude/
+
+# macOS
+.DS_Store
+**/.DS_Store
+
+# Environment (secrets — use docker-compose env or .env)
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Docker (avoid recursive context)
+Dockerfile
+docker-compose.yml
+docker-compose.override.yml

@@ -11,7 +11,7 @@ const EMPTY = {
   gapAnalysis: [],
 };
 
-export function useData() {
+export function useData(productId) {
   const [data, setData] = useState(EMPTY);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -21,7 +21,8 @@ export function useData() {
     setLoading(true);
     setError(null);
     try {
-      const res = await fetch('/api/data', { cache: 'no-store' });
+      const url = productId ? `/api/data?product_id=${productId}` : '/api/data';
+      const res = await fetch(url, { cache: 'no-store' });
       const json = await res.json();
       if (json.exists === false) {
         setData(EMPTY);
@@ -42,11 +43,16 @@ export function useData() {
       setLoading(false);
       setFetched(true);
     }
-  }, []);
+  }, [productId]);
 
   useEffect(() => {
     if (!fetched) { fetchData(); }
   }, [fetched, fetchData]);
+
+  // Re-fetch when productId changes
+  useEffect(() => {
+    if (fetched && productId !== undefined) { fetchData(); }
+  }, [productId, fetchData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return { ...data, loading, error, refresh: fetchData };
 }

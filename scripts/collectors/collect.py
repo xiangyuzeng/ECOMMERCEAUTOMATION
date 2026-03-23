@@ -182,8 +182,11 @@ logging.basicConfig(
 logger = logging.getLogger('collector')
 
 
-def load_config():
-    """Load config.json from project root."""
+def load_config(product_id=None):
+    """Load config - from data/{product_id}/config.json if product_id given, else root config.json."""
+    if product_id:
+        from scripts.config_manager import get_product_config
+        return get_product_config(product_id)
     config_path = PROJ_ROOT / 'config.json'
     if not config_path.exists():
         logger.error(f"config.json not found at {config_path}")
@@ -260,9 +263,21 @@ async def main():
                         help='Chrome profile directory name (e.g. "Default", "Profile 2")')
     parser.add_argument('--discover', type=str, default=None,
                         help='Amazon product URL to discover and analyze')
+    parser.add_argument('--product-id', type=str, default=None,
+                        help='Product ID for multi-product mode')
     args = parser.parse_args()
 
-    config = load_config()
+    product_id = args.product_id
+
+    # Override progress file path for multi-product mode
+    if product_id:
+        from scripts.config_manager import get_product_paths
+        ppaths = get_product_paths(product_id)
+        os.makedirs(ppaths['logs'], exist_ok=True)
+        if args.progress_file == default_progress:
+            args.progress_file = os.path.join(ppaths['logs'], 'collect_progress.json')
+
+    config = load_config(product_id=product_id)
 
     if 'collection' not in config:
         logger.error("No 'collection' section in config.json. Please add collection settings.")
@@ -353,7 +368,7 @@ async def main():
                 progress._write()
 
             # Reload config (it was updated by discovery)
-            config = load_config()
+            config = load_config(product_id=product_id)
 
             # Rebuild task manifest with new config
             # Fake args for task manifest
@@ -489,8 +504,13 @@ async def main():
         # Clean up temp download dir
         shutil.rmtree(download_dir, ignore_errors=True)
         # Clean up lock files
+        if product_id:
+            from scripts.config_manager import get_product_paths
+            log_dir = Path(get_product_paths(product_id)['logs'])
+        else:
+            log_dir = PROJECT_ROOT / 'logs'
         for lock_name in ['.discovering', '.collecting']:
-            lock_path = PROJECT_ROOT / 'logs' / lock_name
+            lock_path = log_dir / lock_name
             try:
                 if lock_path.exists():
                     lock_path.unlink()
@@ -505,8 +525,11 @@ async def main():
     pipeline_ok = False
     try:
         import subprocess
+        cmd = ['python3', str(PROJECT_ROOT / 'scripts' / 'generate_report.py')]
+        if product_id:
+            cmd.extend(['--product-id', product_id])
         result = subprocess.run(
-            ['python3', str(PROJECT_ROOT / 'scripts' / 'generate_report.py')],
+            cmd,
             capture_output=True, text=True, cwd=str(PROJECT_ROOT),
             timeout=600,  # 10 minutes — large keyword sets can take 5+ min
         )
@@ -519,15 +542,21 @@ async def main():
         logger.error(f"Pipeline execution failed: {e}")
 
     # Send macOS desktop notification
-    _send_notification(pipeline_ok, progress)
+    _send_notification(pipeline_ok, progress, product_id=product_id)
 
 
-def _send_notification(pipeline_ok, progress):
+def _send_notification(pipeline_ok, progress, product_id=None):
     """Send macOS notification with results summary and file paths."""
     import subprocess as _sp
 
-    outputs_dir = PROJECT_ROOT / 'outputs'
-    processed_dir = PROJECT_ROOT / 'processed'
+    if product_id:
+        from scripts.config_manager import get_product_paths
+        ppaths = get_product_paths(product_id)
+        outputs_dir = Path(ppaths['outputs'])
+        processed_dir = Path(ppaths['processed'])
+    else:
+        outputs_dir = PROJECT_ROOT / 'outputs'
+        processed_dir = PROJECT_ROOT / 'processed'
 
     # Find generated files
     xlsx_files = sorted(outputs_dir.glob('*.xlsx'), key=lambda f: f.stat().st_mtime, reverse=True)

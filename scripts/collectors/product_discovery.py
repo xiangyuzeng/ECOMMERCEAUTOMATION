@@ -641,22 +641,32 @@ async def discover_competitors_via_sellersprite(page, seed_keyword, my_asin, max
     return competitors
 
 
-def update_config_with_discovery(product_info, competitors, seed_keywords):
+def update_config_with_discovery(product_info, competitors, seed_keywords, product_id=None):
     """Update config.json with discovered product data, competitors, and seeds.
 
     Creates a backup before writing. Merges new competitors with existing ones
     (existing entries keyed by ASIN are preserved, new ones added to open slots).
+
+    When product_id is provided, uses config_manager for per-product config storage
+    under data/{product_id}/config.json. Otherwise falls back to root config.json.
     """
     import shutil
-    config_path = PROJECT_ROOT / 'config.json'
-    backup_path = PROJECT_ROOT / 'config.backup.json'
 
-    with open(config_path) as f:
-        config = json.load(f)
+    # Determine config source based on product_id
+    if product_id:
+        from scripts.config_manager import get_product_config, save_product_config, get_product_paths
+        config = get_product_config(product_id)
+        logger.info(f"Using per-product config for {product_id}")
+    else:
+        config_path = PROJECT_ROOT / 'config.json'
+        backup_path = PROJECT_ROOT / 'config.backup.json'
 
-    # Backup current config before making changes
-    shutil.copy2(config_path, backup_path)
-    logger.info(f"Config backed up to {backup_path}")
+        with open(config_path) as f:
+            config = json.load(f)
+
+        # Backup current config before making changes
+        shutil.copy2(config_path, backup_path)
+        logger.info(f"Config backed up to {backup_path}")
 
     asin = product_info['asin']
     parent_asin = product_info.get('parent_asin', asin)
@@ -728,32 +738,41 @@ def update_config_with_discovery(product_info, competitors, seed_keywords):
     config['collection']['ads_insights_asins'] = ads_asins
 
     # Clean old input files — critical to prevent data contamination between products
-    # Archive old files to inputs/archive/<old_asin>/ before writing new config
-    inputs_dir = PROJECT_ROOT / 'inputs'
-    archive_base = inputs_dir / 'archive'
-    for sub in ['sellersprite', 'seller-central']:
-        sub_dir = inputs_dir / sub
-        if not sub_dir.exists():
-            continue
-        pattern_exts = {'sellersprite': '*.xlsx', 'seller-central': '*.csv'}
-        old_files = list(sub_dir.glob(pattern_exts.get(sub, '*')))
-        if old_files:
-            # Archive under timestamp to avoid conflicts
-            from datetime import datetime as _dt
-            archive_dir = archive_base / _dt.now().strftime('%Y%m%d_%H%M%S')
-            archive_dir.mkdir(parents=True, exist_ok=True)
-            moved_count = 0
-            for f in old_files:
-                try:
-                    shutil.move(str(f), str(archive_dir / f.name))
-                    moved_count += 1
-                except Exception as e:
-                    logger.warning(f"Could not archive {f.name}: {e}")
-            if moved_count:
-                logger.info(f"Archived {moved_count} old {sub} input files → {archive_dir}")
+    if product_id:
+        # Per-product mode: input files are already in per-product directory, no archiving needed
+        # Just clear old files if any
+        paths = get_product_paths(product_id)
+        logger.info(f"Per-product mode: input files reside in {paths['inputs']}")
+    else:
+        # Legacy flat mode: archive old files to inputs/archive/
+        inputs_dir = PROJECT_ROOT / 'inputs'
+        archive_base = inputs_dir / 'archive'
+        for sub in ['sellersprite', 'seller-central']:
+            sub_dir = inputs_dir / sub
+            if not sub_dir.exists():
+                continue
+            pattern_exts = {'sellersprite': '*.xlsx', 'seller-central': '*.csv'}
+            old_files = list(sub_dir.glob(pattern_exts.get(sub, '*')))
+            if old_files:
+                # Archive under timestamp to avoid conflicts
+                from datetime import datetime as _dt
+                archive_dir = archive_base / _dt.now().strftime('%Y%m%d_%H%M%S')
+                archive_dir.mkdir(parents=True, exist_ok=True)
+                moved_count = 0
+                for f in old_files:
+                    try:
+                        shutil.move(str(f), str(archive_dir / f.name))
+                        moved_count += 1
+                    except Exception as e:
+                        logger.warning(f"Could not archive {f.name}: {e}")
+                if moved_count:
+                    logger.info(f"Archived {moved_count} old {sub} input files → {archive_dir}")
 
     # Also clear processed JSON and old outputs for clean slate
-    processed_dir = PROJECT_ROOT / 'processed'
+    if product_id:
+        processed_dir = Path(get_product_paths(product_id)['processed'])
+    else:
+        processed_dir = PROJECT_ROOT / 'processed'
     if processed_dir.exists():
         for f in processed_dir.glob('*.json'):
             try:
@@ -762,15 +781,23 @@ def update_config_with_discovery(product_info, competitors, seed_keywords):
                 pass
 
     # Write back
-    with open(config_path, 'w') as f:
-        json.dump(config, f, indent=2, ensure_ascii=False)
+    if product_id:
+        save_product_config(product_id, config)
+        logger.info(f"Per-product config saved for {product_id}: {len(competitors)} competitors, {len(seed_keywords)} seeds")
+    else:
+        with open(config_path, 'w') as f:
+            json.dump(config, f, indent=2, ensure_ascii=False)
+        logger.info(f"Config updated: product={asin}, {len(competitors)} competitors, {len(seed_keywords)} seeds")
 
-    logger.info(f"Config updated: product={asin}, {len(competitors)} competitors, {len(seed_keywords)} seeds")
     return config
 
 
-async def run_discovery(page, amazon_url):
+async def run_discovery(page, amazon_url, product_id=None):
     """Full discovery flow: URL → product info → competitors → config update.
+
+    When product_id is provided, creates a per-product directory structure
+    under data/{product_id}/ and stores config there. When product_id is None,
+    it is auto-derived from the scraped ASIN.
 
     Returns dict with discovery results for the dashboard to display.
     """
@@ -798,6 +825,31 @@ async def run_discovery(page, amazon_url):
         'brand': product_info.get('brand', ''),
         'price': product_info.get('price'),
     })
+
+    # Derive product_id from ASIN if not provided
+    if not product_id:
+        product_id = product_info.get('asin') or asin
+
+    # Create per-product directory structure via config_manager
+    try:
+        from scripts.config_manager import create_product, get_product_paths
+        create_product(
+            asin=product_id,
+            brand=product_info.get('brand', ''),
+            title=product_info.get('title', ''),
+            price=product_info.get('price'),
+            category=product_info.get('category', ''),
+        )
+        # Ensure input directories exist
+        paths = get_product_paths(product_id)
+        os.makedirs(paths['inputs_sellersprite'], exist_ok=True)
+        os.makedirs(paths['inputs_seller_central'], exist_ok=True)
+        logger.info(f"Created product directory structure for {product_id}")
+    except Exception as e:
+        logger.warning(f"Could not create product via config_manager (falling back to flat mode): {e}")
+        # If config_manager fails (e.g. data/ dir doesn't exist), reset product_id to None
+        # so we fall back to the old behavior of writing to root config.json
+        product_id = None
 
     # Step 3: Generate seed keywords
     seed_keywords = generate_seed_keywords(
@@ -854,13 +906,14 @@ async def run_discovery(page, amazon_url):
         'competitors': [{'asin': c['asin'], 'brand': c.get('brand', '?')} for c in competitors],
     })
 
-    # Step 5: Update config.json
+    # Step 5: Update config
     try:
-        updated_config = update_config_with_discovery(product_info, competitors, seed_keywords)
+        updated_config = update_config_with_discovery(product_info, competitors, seed_keywords, product_id=product_id)
         result['steps'].append({'step': 'update_config', 'status': 'ok'})
     except Exception as e:
         logger.error(f"Config update failed: {e}")
         result['steps'].append({'step': 'update_config', 'status': 'failed', 'error': str(e)})
 
+    result['product_id'] = product_id
     result['status'] = 'completed'
     return result
