@@ -1,0 +1,52 @@
+# Dependencies
+node_modules/
+dashboard/node_modules/
+
+# Build artifacts
+dashboard/.next/
+dashboard/out/
+__pycache__/
+*.pyc
+*.pyo
+
+# Data files (large, user-specific)
+inputs/sellersprite/*.xlsx
+inputs/seller-central/*.csv
+inputs/archive/
+processed/*.json
+outputs/*.xlsx
+outputs/*.md
+data/
+
+# Logs
+logs/*.log
+logs/.collecting
+logs/.processing
+logs/.discovering
+logs/collect_progress.json
+logs/discover_progress.json
+logs/screenshots/
+
+# Environment
+.env
+.env.local
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Debug screenshots
+logs/debug_*.png
+logs/collection_log.json
+
+# Backup files
+*.backup.json
+
+# Claude settings (contains API keys)
+settings.json
+.claude/
+config.json

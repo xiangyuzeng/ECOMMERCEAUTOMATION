@@ -1,0 +1,4 @@
+pandas
+openpyxl
+xlrd
+playwright>=1.40

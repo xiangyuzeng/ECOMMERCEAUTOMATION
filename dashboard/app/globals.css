@@ -1,0 +1,7 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  background: #f8f9fb;
+  color: #1f2937;
+}
+code, .mono { font-family: 'JetBrains Mono', monospace; }
