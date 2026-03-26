@@ -11,6 +11,14 @@ __pycache__/
 
 # Data files (large xlsx/csv kept locally)
 inputs/archive/
+inputs/sellersprite/*.xlsx
+inputs/seller-central/*.csv
+
+# Runtime product data (per-product directories)
+data/*/inputs/
+data/*/outputs/
+data/*/processed/
+data/*/logs/
 
 # Environment
 .env
