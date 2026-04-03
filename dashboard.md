@@ -1,1 +1,0 @@
-Build the Next.js analytics dashboard in dashboard/ directory. Read processed/*.json data files and create an interactive dashboard with 7 tabs matching the 运营方案 Excel. Use Next.js 14 App Router, NO Tailwind (pure inline styles), light theme (#f8f9fb bg, white cards), Inter + Noto Sans SC fonts. Then: cd dashboard && npm install && npm run dev. $ARGUMENTS
