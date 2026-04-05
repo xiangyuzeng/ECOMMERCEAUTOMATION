@@ -62,6 +62,24 @@ class SellerSpriteCollector:
         if self.on_task_done:
             self.on_task_done(result)
 
+    async def _wait_for_new_file(self, directory, pre_files, timeout=30):
+        """Watch a directory for a new .xlsx file (not in pre_files set).
+        Returns the filename if found, None if timeout."""
+        import asyncio
+        for _ in range(timeout):
+            try:
+                current = set(os.listdir(directory))
+                new = current - pre_files
+                xlsx_new = [f for f in new if f.endswith('.xlsx') and not f.startswith('.')]
+                if xlsx_new:
+                    # Wait a bit more for file to finish writing
+                    await asyncio.sleep(2)
+                    return xlsx_new[0]
+            except Exception:
+                pass
+            await asyncio.sleep(1)
+        return None
+
     async def _is_page_alive(self):
         """Check if the browser page is still open.
 
@@ -286,15 +304,20 @@ class SellerSpriteCollector:
         else:
             logger.info(f"Found 'Export' button for {task_name} — will try direct download")
 
-        # Step 2: Click Export — this may show options panel or start download directly
-        # Use force=True to bypass any overlay (v-modal, yun-message-box) that intercepts clicks
+        # Step 2: Click Export — then watch for new file in download directory
+        # CDP downloads don't reliably trigger Playwright's expect_download event,
+        # so we use a hybrid approach: try expect_download first, fall back to filesystem watching.
         logger.info(f"Clicking Export button for {task_name}...")
+
+        # Snapshot current files before clicking
+        pre_files = set(os.listdir(self.download_dir)) if os.path.isdir(self.download_dir) else set()
+
         try:
             async with self.page.expect_download(timeout=15000) as download_info:
                 await export_btn.click(force=True)
-            # Direct download worked — wait for content to finish transferring
+            # Playwright intercepted the download — use standard path
             download = await download_info.value
-            dl_path = await download.path()  # blocks until download completes
+            dl_path = await download.path()
             if dl_path is None:
                 raise Exception("Download was cancelled or failed")
             dest_path = os.path.join(self.download_dir, download.suggested_filename)
@@ -302,11 +325,27 @@ class SellerSpriteCollector:
             if os.path.getsize(dest_path) == 0:
                 os.remove(dest_path)
                 raise Exception(f"Downloaded file is 0 bytes: {download.suggested_filename}")
-            logger.info(f"Direct download: {download.suggested_filename} ({os.path.getsize(dest_path)} bytes)")
+            logger.info(f"Direct download (Playwright): {download.suggested_filename} ({os.path.getsize(dest_path)} bytes)")
             final = move_to_inputs(dest_path, 'sellersprite', product_id=self.product_id)
             return {'task': task_name, 'status': 'OK', 'file': os.path.basename(final)}
 
-        except Exception:
+        except Exception as pw_err:
+            # Playwright download didn't fire — check if CDP saved the file directly
+            logger.info(f"Playwright download not intercepted ({pw_err.__class__.__name__}), checking filesystem...")
+            await self.page.wait_for_timeout(5000)  # Give browser time to save
+
+            # Check for new files in download directory (CDP setDownloadBehavior may have saved it)
+            new_file = await self._wait_for_new_file(self.download_dir, pre_files, timeout=30)
+            if new_file:
+                dest_path = os.path.join(self.download_dir, new_file)
+                if os.path.getsize(dest_path) > 0:
+                    logger.info(f"Direct download (filesystem): {new_file} ({os.path.getsize(dest_path)} bytes)")
+                    final = move_to_inputs(dest_path, 'sellersprite', product_id=self.product_id)
+                    return {'task': task_name, 'status': 'OK', 'file': os.path.basename(final)}
+                else:
+                    logger.warning(f"File appeared but is 0 bytes: {new_file}")
+
+        try:
             # No direct download — options panel appeared or async export queued
             logger.info("No direct download after click...")
 

@@ -167,6 +167,9 @@ ADSPOWER_PROFILE_ID=${PROFILE_ID:-}
 # --- 应用配置 ---
 NODE_ENV=production
 PORT=3000
+
+# --- 下载路径 (Docker 需要知道宿主机路径) ---
+DOWNLOAD_DIR_HOST=$(cd "$PROJECT_DIR" && pwd)/downloads
 ENVEOF
 
     echo ""

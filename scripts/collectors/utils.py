@@ -123,19 +123,39 @@ async def setup_browser_adspower(config):
         await pw.stop()
         raise BrowserLaunchError(f"Failed to connect to AdsPower browser: {e}")
 
-    # Use the existing context and page from AdsPower
+    # MUST reuse existing AdsPower context (contexts[0]) — it has SellerSprite cookies.
+    # Creating a new context loses all login state.
     context = browser.contexts[0] if browser.contexts else await browser.new_context()
-    # AdsPower may have multiple pages open — use the last one or create new
+
+    # Set CDP download behavior on the existing context.
+    # This tells the HOST browser to save downloads to a specific directory
+    # that's shared with Docker via volume mount (./downloads:/app/downloads).
+    host_dl_dir = os.environ.get('DOWNLOAD_DIR_HOST', '')
+    container_dl_dir = os.environ.get('DOWNLOAD_DIR', str(PROJECT_ROOT / 'downloads'))
+    os.makedirs(container_dl_dir, exist_ok=True)
+    cdp_dl_path = host_dl_dir if host_dl_dir else container_dl_dir
+
+    # Use existing page or create new
     if context.pages:
         page = context.pages[-1]
     else:
         page = await context.new_page()
 
+    try:
+        cdp = await context.new_cdp_session(page)
+        await cdp.send('Browser.setDownloadBehavior', {
+            'behavior': 'allowAndName',
+            'downloadPath': cdp_dl_path,
+            'eventsEnabled': True,
+        })
+        logger.info(f"CDP download path set to: {cdp_dl_path} (container reads: {container_dl_dir})")
+    except Exception as e:
+        logger.warning(f"Could not set CDP download behavior: {e}")
+
     # Navigate to a blank page first to ensure the page is active
     try:
         await page.goto('about:blank', timeout=5000)
     except Exception:
-        # If current page is dead, create a new one
         page = await context.new_page()
 
     logger.info(f"Connected to AdsPower browser: {user_id}")

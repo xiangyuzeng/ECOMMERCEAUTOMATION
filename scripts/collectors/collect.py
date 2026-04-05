@@ -301,8 +301,12 @@ async def main():
     if not args.discover:
         progress.init_tasks(build_task_manifest(config, args))
 
-    download_dir = tempfile.mkdtemp(prefix='ecomm_collect_')
-    logger.info(f"Temp download dir: {download_dir}")
+    # Use a shared downloads directory (not temp) so Docker volume mounts work.
+    # When running in Docker, the browser (on host) downloads to ./downloads/
+    # which is mounted as /app/downloads in the container.
+    download_dir = os.environ.get('DOWNLOAD_DIR', str(PROJECT_ROOT / 'downloads'))
+    os.makedirs(download_dir, exist_ok=True)
+    logger.info(f"Download dir: {download_dir}")
 
     pw = None
     context = None
@@ -516,8 +520,15 @@ async def main():
             await context.close()
         if pw:
             await pw.stop()
-        # Clean up temp download dir
-        shutil.rmtree(download_dir, ignore_errors=True)
+        # Clean up download dir contents (but keep the directory for next run)
+        for f in os.listdir(download_dir):
+            fp = os.path.join(download_dir, f)
+            try:
+                if os.path.isfile(fp):
+                    os.remove(fp)
+            except Exception:
+                pass
+        logger.info("Browser closed, temp files cleaned up")
         # Clean up lock files
         if product_id:
             from scripts.config_manager import get_product_paths

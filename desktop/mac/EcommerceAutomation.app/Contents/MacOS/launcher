@@ -71,6 +71,8 @@ with open('.env', 'w') as f:
     f.write(f'ADSPOWER_PROFILE_ID={setup.get(\"profile_id\", \"\")}\n')
     f.write('NODE_ENV=production\n')
     f.write('PORT=3000\n')
+    import os
+    f.write(f'DOWNLOAD_DIR_HOST={os.getcwd()}/downloads\n')
 " 2>/dev/null
 elif [ ! -f .env ]; then
     # First run — create minimal .env (setup wizard will handle the rest)

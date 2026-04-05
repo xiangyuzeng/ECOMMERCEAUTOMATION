@@ -32,6 +32,10 @@ Thumbs.db
 .vscode/
 .idea/
 
+# Downloads (temporary, shared between host browser and container)
+downloads/*.xlsx
+downloads/*.csv
+
 # Debug screenshots
 logs/debug_*.png
 logs/screenshots/

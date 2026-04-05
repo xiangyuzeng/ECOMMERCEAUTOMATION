@@ -23,6 +23,9 @@ services:
       - ADSPOWER_API_URL=${ADSPOWER_API_URL:-http://host.docker.internal:50325}
       - ADSPOWER_API_KEY=${ADSPOWER_API_KEY:-}
       - ADSPOWER_PROFILE_ID=${ADSPOWER_PROFILE_ID:-}
+      # Shared download directory — browser (host) saves, container reads
+      - DOWNLOAD_DIR=/app/downloads
+      - DOWNLOAD_DIR_HOST=${DOWNLOAD_DIR_HOST:-}
 
     volumes:
       # Multi-product data storage (persistent)
@@ -30,6 +33,9 @@ services:
 
       # Configuration (read-only — edit on host, restart to apply)
       - ./config.json:/app/config.json:ro
+
+      # Shared downloads directory — browser saves here, container reads from here
+      - ./downloads:/app/downloads
 
       # Input/output directories (shared with host for easy file access)
       - ./inputs:/app/inputs
