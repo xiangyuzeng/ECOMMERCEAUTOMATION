@@ -45,7 +45,39 @@ function getCollectLockFile(productId) {
 export async function POST(request) {
   const body = await request.json();
   const { url } = body;
-  const productId = body.product_id || resolveActiveProductId();
+
+  // Extract ASIN from URL to use as product_id for the NEW product
+  let productId = body.product_id;
+  if (!productId && url) {
+    const asinMatch = url.match(/\/dp\/([A-Z0-9]{10})/i) ||
+                      url.match(/\/gp\/product\/([A-Z0-9]{10})/i) ||
+                      url.match(/\/gp\/aw\/d\/([A-Z0-9]{10})/i);
+    if (asinMatch) {
+      productId = asinMatch[1].toUpperCase();
+    }
+  }
+  if (!productId) {
+    productId = resolveActiveProductId();
+  }
+
+  // Create product directory + set as active product BEFORE spawning discovery
+  if (productId) {
+    const productDir = path.join(PROJECT_ROOT, 'data', productId);
+    for (const sub of ['inputs/sellersprite', 'inputs/seller-central', 'processed', 'outputs', 'logs']) {
+      fs.mkdirSync(path.join(productDir, sub), { recursive: true });
+    }
+    // Update products.json
+    const productsFile = path.join(PROJECT_ROOT, 'data', 'products.json');
+    let productsData = { products: [], active_product_id: null };
+    if (fs.existsSync(productsFile)) {
+      try { productsData = JSON.parse(fs.readFileSync(productsFile, 'utf-8')); } catch {}
+    }
+    if (!productsData.products.find(p => p.id === productId)) {
+      productsData.products.push({ id: productId, brand: '', title: '', asin: productId, status: 'discovering' });
+    }
+    productsData.active_product_id = productId;
+    fs.writeFileSync(productsFile, JSON.stringify(productsData, null, 2));
+  }
 
   const lockFile = getLockFile(productId);
   const progressFile = getProgressFile(productId);

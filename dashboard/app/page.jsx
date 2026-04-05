@@ -1159,6 +1159,11 @@ function ControlTab({ onRefresh }) {
         setDiscoverStatus(data);
         if (!data.isRunning && data.progress?.status !== 'starting') {
           setIsDiscovering(false);
+          // Discovery finished — reload page to switch to the new product
+          // This ensures all tabs show fresh data for the newly discovered product
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500); // brief delay so user sees completion status
         }
       } catch {}
     }, 2000);
