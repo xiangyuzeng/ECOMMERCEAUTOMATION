@@ -265,6 +265,8 @@ async def main():
                         help='Amazon product URL to discover and analyze')
     parser.add_argument('--product-id', type=str, default=None,
                         help='Product ID for multi-product mode')
+    parser.add_argument('--retry-failed', action='store_true',
+                        help='Retry only previously failed tasks')
     args = parser.parse_args()
 
     product_id = args.product_id
@@ -285,6 +287,17 @@ async def main():
 
     # Initialize progress writer (no-op when --progress-file is not set)
     progress = ProgressWriter(args.progress_file)
+
+    # Retry-failed mode: read previous progress and extract failed task IDs
+    retry_task_ids = None
+    if args.retry_failed and os.path.exists(args.progress_file):
+        try:
+            prev = json.load(open(args.progress_file))
+            retry_task_ids = [t['id'] for t in prev.get('tasks', []) if t.get('status') == 'failed']
+            logger.info(f"Retry mode: {len(retry_task_ids)} failed tasks to retry: {retry_task_ids}")
+        except Exception as e:
+            logger.warning(f"Could not read previous progress for retry: {e}")
+
     if not args.discover:
         progress.init_tasks(build_task_manifest(config, args))
 
@@ -429,6 +442,7 @@ async def main():
             logger.info("Starting SellerSprite collection...")
             ss = SellerSpriteCollector(config, page, download_dir,
                                        product_id=product_id,
+                                       retry_task_ids=retry_task_ids,
                                        on_task_start=lambda tid: on_task_start(tid, 'sellersprite'),
                                        on_task_done=on_task_done)
             ss_results = await ss.collect_all()
@@ -542,12 +556,12 @@ async def main():
     except Exception as e:
         logger.error(f"Pipeline execution failed: {e}")
 
-    # Send macOS desktop notification
-    _send_notification(pipeline_ok, progress, product_id=product_id)
+    # Send macOS desktop notification + webhook
+    _send_notification(pipeline_ok, progress, product_id=product_id, config=config)
 
 
-def _send_notification(pipeline_ok, progress, product_id=None):
-    """Send macOS notification with results summary and file paths."""
+def _send_notification(pipeline_ok, progress, product_id=None, config=None):
+    """Send macOS notification + webhook with results summary."""
     import subprocess as _sp
 
     if product_id:
@@ -592,6 +606,26 @@ def _send_notification(pipeline_ok, progress, product_id=None):
         ], timeout=5, capture_output=True)
     except Exception:
         pass
+
+    # Webhook notification (Slack/Discord/custom)
+    webhook_url = ''
+    if config:
+        webhook_url = config.get('notifications', {}).get('webhook_url', '')
+    if not webhook_url:
+        webhook_url = os.environ.get('NOTIFICATION_WEBHOOK_URL', '')
+    if webhook_url:
+        try:
+            import urllib.request
+            plain_msg = msg.replace('\\n', '\n')
+            payload = json.dumps({
+                "text": f"{title}\n{plain_msg}",
+                "blocks": [{"type": "section", "text": {"type": "mrkdwn", "text": f"*{title}*\n{plain_msg}"}}]
+            })
+            req = urllib.request.Request(webhook_url, data=payload.encode(), headers={'Content-Type': 'application/json'})
+            urllib.request.urlopen(req, timeout=10)
+            logger.info(f"Webhook notification sent to {webhook_url[:40]}...")
+        except Exception as e:
+            logger.warning(f"Webhook notification failed: {e}")
 
     # Log file paths for easy review
     logger.info("=" * 60)

@@ -217,6 +217,7 @@ export async function POST(request) {
   if (productId) args.push('--product-id', productId);
   if (mode === 'sellersprite') args.push('--sellersprite-only');
   if (mode === 'seller-central') args.push('--seller-central-only');
+  if (mode === 'retry-failed') args.push('--retry-failed');
   // When AdsPower is enabled, do NOT pass --chrome-profile (AdsPower manages its own browser)
   if (chromeProfile && !adspowerEnabled) args.push('--chrome-profile', chromeProfile);
 

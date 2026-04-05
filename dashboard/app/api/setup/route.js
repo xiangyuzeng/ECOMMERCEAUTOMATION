@@ -78,6 +78,45 @@ export async function GET(req) {
     }
   }
 
+  // Verify browser can start (lightweight login check)
+  if (action === 'verify-login') {
+    const apiKey = searchParams.get('api_key');
+    const profileId = searchParams.get('profile_id');
+    const url = getAdsPowerUrl();
+
+    try {
+      const startRes = await fetch(
+        `${url}/api/v1/browser/start?api_key=${apiKey}&user_id=${profileId}`,
+        { signal: AbortSignal.timeout(30000) }
+      );
+      const startData = await startRes.json();
+
+      if (startData.code !== 0) {
+        return NextResponse.json({ verified: false, error: `Browser start failed: ${startData.msg}` });
+      }
+
+      return NextResponse.json({
+        verified: true,
+        message: 'AdsPower browser started successfully. SellerSprite login will be verified during first collection.',
+      });
+    } catch (e) {
+      // Try localhost fallback
+      try {
+        const startRes2 = await fetch(
+          `http://localhost:50325/api/v1/browser/start?api_key=${apiKey}&user_id=${profileId}`,
+          { signal: AbortSignal.timeout(15000) }
+        );
+        const startData2 = await startRes2.json();
+        return NextResponse.json({
+          verified: startData2.code === 0,
+          message: startData2.code === 0 ? 'Browser started successfully' : startData2.msg,
+        });
+      } catch {
+        return NextResponse.json({ verified: false, error: e.message });
+      }
+    }
+  }
+
   // Return current setup state
   const setup = await readSetup();
   return NextResponse.json({

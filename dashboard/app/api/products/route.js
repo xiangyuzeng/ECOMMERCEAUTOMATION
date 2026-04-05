@@ -110,3 +110,38 @@ export async function POST(request) {
 
   return NextResponse.json({ error: 'Unknown action' }, { status: 400 });
 }
+
+// DELETE /api/products?product_id=XXX — archive a product
+export async function DELETE(req) {
+  const { searchParams } = new URL(req.url);
+  const productId = searchParams.get('product_id');
+  if (!productId) {
+    return NextResponse.json({ error: 'product_id required' }, { status: 400 });
+  }
+
+  const productDir = path.join(PROJECT_ROOT, 'data', productId);
+  const archiveDir = path.join(PROJECT_ROOT, 'data', '_archived', productId);
+
+  // Move product directory to archive
+  if (fs.existsSync(productDir)) {
+    fs.mkdirSync(path.join(PROJECT_ROOT, 'data', '_archived'), { recursive: true });
+    if (fs.existsSync(archiveDir)) {
+      // Archive already exists — remove old archive first
+      fs.rmSync(archiveDir, { recursive: true, force: true });
+    }
+    fs.renameSync(productDir, archiveDir);
+  }
+
+  // Remove from products.json
+  const productsFile = path.join(PROJECT_ROOT, 'data', 'products.json');
+  if (fs.existsSync(productsFile)) {
+    const products = JSON.parse(fs.readFileSync(productsFile, 'utf-8'));
+    products.products = (products.products || []).filter(p => p.id !== productId);
+    if (products.active_product_id === productId) {
+      products.active_product_id = products.products[0]?.id || null;
+    }
+    fs.writeFileSync(productsFile, JSON.stringify(products, null, 2));
+  }
+
+  return NextResponse.json({ success: true, archived: productId });
+}

@@ -42,11 +42,12 @@ SELECTORS = {
 class SellerSpriteCollector:
     """Automates SellerSprite data exports via Playwright browser automation."""
 
-    def __init__(self, config, page, download_dir, product_id=None, on_task_start=None, on_task_done=None):
+    def __init__(self, config, page, download_dir, product_id=None, retry_task_ids=None, on_task_start=None, on_task_done=None):
         self.config = config
         self.page = page
         self.download_dir = download_dir
         self.product_id = product_id
+        self.retry_task_ids = retry_task_ids  # If set, only run these task IDs
         self.collection = config.get('collection', {})
         self.delay = self.collection.get('delay_between_tasks_sec', 5)
         self.results = []
@@ -127,6 +128,11 @@ class SellerSpriteCollector:
         task_queue.append(('competitor_research', 'competitor_research', None))
         for asin in self.collection.get('ads_insights_asins', []):
             task_queue.append(('ads_insights', f'ads_insights_{asin}', asin))
+
+        # Filter to only retry-failed tasks if specified
+        if self.retry_task_ids:
+            task_queue = [t for t in task_queue if t[1] in self.retry_task_ids]
+            logger.info(f"Retry mode: running {len(task_queue)} failed tasks: {[t[1] for t in task_queue]}")
 
         for i, (task_type, task_id, param) in enumerate(task_queue):
             # Check browser health before each task (async CDP round-trip)

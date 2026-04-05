@@ -1030,6 +1030,10 @@ function ControlTab({ onRefresh }) {
   const [discoverUrl, setDiscoverUrl] = useState('');
   const [discoverStatus, setDiscoverStatus] = useState(null); // null | {isRunning, progress}
   const [isDiscovering, setIsDiscovering] = useState(false);
+  const [prevRunning, setPrevRunning] = useState(false);
+  const [collectStartTime, setCollectStartTime] = useState(null);
+  const [elapsed, setElapsed] = useState(0);
+  const [showCompleteBanner, setShowCompleteBanner] = useState(false);
 
   const fetchAll = useCallback(async () => {
     try {
@@ -1064,10 +1068,57 @@ function ControlTab({ onRefresh }) {
 
   // Polling: 2.5s when running, 15s when idle
   useEffect(() => {
-    const isRunning = collectStatus?.isRunning;
-    const interval = setInterval(fetchAll, isRunning ? 2500 : 15000);
+    const running = collectStatus?.isRunning;
+    const interval = setInterval(fetchAll, running ? 2500 : 15000);
     return () => clearInterval(interval);
   }, [collectStatus?.isRunning, fetchAll]);
+
+  // Feature 1: Auto-refresh dashboard when collection finishes
+  useEffect(() => {
+    const running = collectStatus?.isRunning || false;
+    if (prevRunning && !running) {
+      // Collection just finished — auto-refresh all data
+      if (onRefresh) onRefresh();
+      setShowCompleteBanner(true);
+      setTimeout(() => setShowCompleteBanner(false), 8000);
+    }
+    if (running && !prevRunning) {
+      setCollectStartTime(Date.now());
+    }
+    setPrevRunning(running);
+  }, [collectStatus?.isRunning]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Feature 2: Elapsed time counter
+  useEffect(() => {
+    if (!collectStatus?.isRunning || !collectStartTime) return;
+    const timer = setInterval(() => {
+      setElapsed(Math.floor((Date.now() - collectStartTime) / 1000));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [collectStatus?.isRunning, collectStartTime]);
+
+  // Feature 3: Retry failed tasks
+  const retryFailed = async () => {
+    setIsStarting(true);
+    try {
+      const res = await fetch('/api/collect', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mode: 'retry-failed' }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setCollectStatus({ isRunning: true, pid: data.pid, progress: { status: 'starting', tasks: [], completed: 0, total: 0 } });
+        setCollectStartTime(Date.now());
+      }
+    } catch {} finally { setIsStarting(false); }
+  };
+
+  const formatElapsed = (s) => {
+    const m = Math.floor(s / 60);
+    const sec = s % 60;
+    return m > 0 ? `${m}分${sec}秒` : `${sec}秒`;
+  };
 
   const startCollection = async () => {
     setIsStarting(true);
@@ -1488,11 +1539,26 @@ function ControlTab({ onRefresh }) {
           )}
         </div>
 
+        {/* Completion banner */}
+        {showCompleteBanner && (
+          <div style={{
+            padding: '12px 20px', borderRadius: 8, marginBottom: 16,
+            background: progress.errors?.length > 0 ? '#fffbeb' : '#f0fdf4',
+            border: `1px solid ${progress.errors?.length > 0 ? '#fbbf24' : '#86efac'}`,
+            display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+          }}>
+            <span style={{ fontWeight: 600, color: progress.errors?.length > 0 ? '#92400e' : '#166534', fontSize: 14 }}>
+              {progress.errors?.length > 0 ? '⚠️ 采集完成（部分失败）' : '✅ 采集完成！数据已自动刷新'}
+            </span>
+            <button onClick={() => setShowCompleteBanner(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 16, color: '#9ca3af' }}>&times;</button>
+          </div>
+        )}
+
         {/* Progress bar */}
         {(isRunning || isTerminal) && totalCount > 0 && (
           <div style={{ marginBottom: 20 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12, color: '#6b7280', marginBottom: 4 }}>
-              <span>{completedCount} / {totalCount} tasks</span>
+              <span>{completedCount} / {totalCount} tasks {isRunning && elapsed > 0 ? `| 已用时: ${formatElapsed(elapsed)}` : ''}</span>
               <span>{pct}%</span>
             </div>
             <div style={{ height: 8, background: '#e5e7eb', borderRadius: 4, overflow: 'hidden' }}>
@@ -1563,6 +1629,17 @@ function ControlTab({ onRefresh }) {
                 {e.task}: {e.error}
               </div>
             ))}
+            <button
+              onClick={retryFailed}
+              disabled={isStarting}
+              style={{
+                marginTop: 10, padding: '8px 16px', borderRadius: 6, border: 'none',
+                background: '#dc2626', color: '#fff', fontSize: 13, fontWeight: 600,
+                cursor: isStarting ? 'not-allowed' : 'pointer', opacity: isStarting ? 0.5 : 1,
+              }}
+            >
+              🔄 重试失败任务 ({progress.errors.length} 个)
+            </button>
           </div>
         )}
 
@@ -1601,8 +1678,17 @@ function ControlTab({ onRefresh }) {
                 <span style={{ color: '#9ca3af', fontSize: 11 }}>{progress.output_files.json_dir}</span>
               </div>
             )}
-            <div style={{ marginTop: 8, padding: '6px 10px', borderRadius: 4, background: '#dcfce7', fontSize: 11, color: '#166534' }}>
-              💡 在终端打开 Excel 报告: <code style={{ fontFamily: "'JetBrains Mono', monospace" }}>open outputs/*.xlsx</code> — 或切换到上方其他标签页查看数据看板。
+            <div style={{ marginTop: 10, display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+              {progress.output_files.excel?.map((f, i) => {
+                const fname = f.split('/').pop();
+                const pid = discoverStatus?.product_id || status?.product_id || '';
+                return (
+                  <a key={`dl-${i}`} href={`/api/download?file=${encodeURIComponent(fname)}&product_id=${pid}`}
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: 4, padding: '6px 14px', borderRadius: 6, background: '#059669', color: '#fff', fontSize: 12, fontWeight: 600, textDecoration: 'none' }}>
+                    📥 下载 {fname}
+                  </a>
+                );
+              })}
             </div>
           </div>
         )}

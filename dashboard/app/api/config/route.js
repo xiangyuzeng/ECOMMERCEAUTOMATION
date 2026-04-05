@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { readFile } from 'fs/promises';
+import { readFile, writeFile } from 'fs/promises';
 import path from 'path';
 import fs from 'fs';
 
@@ -59,5 +59,36 @@ export async function GET(request) {
     return NextResponse.json({ product: null }, {
       headers: { 'Cache-Control': 'no-cache, no-store' },
     });
+  }
+}
+
+// PUT /api/config — update config sections
+export async function PUT(req) {
+  try {
+    const body = await req.json();
+    const { searchParams } = new URL(req.url);
+    const productId = searchParams.get('product_id');
+    const configPath = getConfigPath(productId);
+
+    const config = JSON.parse(await readFile(configPath, 'utf-8'));
+
+    // Merge updates into config
+    if (body.notifications) {
+      config.notifications = { ...(config.notifications || {}), ...body.notifications };
+    }
+    if (body.schedule) {
+      config.schedule = { ...(config.schedule || {}), ...body.schedule };
+    }
+    if (body.cost_inputs) {
+      config.cost_inputs = { ...(config.cost_inputs || {}), ...body.cost_inputs };
+    }
+    if (body.adspower) {
+      config.adspower = { ...(config.adspower || {}), ...body.adspower };
+    }
+
+    await writeFile(configPath, JSON.stringify(config, null, 2));
+    return NextResponse.json({ success: true });
+  } catch (e) {
+    return NextResponse.json({ error: e.message }, { status: 500 });
   }
 }
