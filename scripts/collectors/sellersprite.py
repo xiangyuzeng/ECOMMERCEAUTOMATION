@@ -345,9 +345,8 @@ class SellerSpriteCollector:
                 else:
                     logger.warning(f"File appeared but is 0 bytes: {new_file}")
 
-        try:
-            # No direct download — options panel appeared or async export queued
-            logger.info("No direct download after click...")
+        # No direct download — options panel appeared or async export queued
+        logger.info("No direct download after click...")
 
         # For async exports ("Export Keywords"), skip Steps 3-5 and go straight to export log polling
         # This avoids wasting 60+ seconds on expect_download timeouts for server-queued exports

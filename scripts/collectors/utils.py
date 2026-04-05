@@ -598,31 +598,42 @@ async def download_from_export_log(page, export_entry, download_dir):
     download_dir = str(download_dir)
     os.makedirs(download_dir, exist_ok=True)
 
-    # Method 1: Direct URL download (if we have a batch-exports URL)
+    # Method 1: Direct HTTP download using browser cookies (works with CDP)
     download_url = export_entry.get('download_url')
     if download_url and 'batch-exports' in download_url:
-        import urllib.request
-        filename = export_entry.get('filename', 'export') + '.xlsx'
+        filename = export_entry.get('filename', 'export')
         if not filename.endswith('.xlsx'):
             filename += '.xlsx'
         dest = os.path.join(download_dir, filename)
         try:
-            # Navigate to the download URL to trigger browser download
-            async with page.expect_download(timeout=60000) as download_info:
-                await page.evaluate(f'() => window.open("{download_url}", "_blank")')
-            download = await download_info.value
-            dl_path = await download.path()  # wait for download to finish
-            if dl_path is None:
-                raise Exception("Export log download cancelled or failed")
-            dest = os.path.join(download_dir, download.suggested_filename)
-            await download.save_as(dest)
-            if os.path.getsize(dest) == 0:
-                os.remove(dest)
-                raise Exception(f"Downloaded file is 0 bytes: {download.suggested_filename}")
-            logger.info(f"Downloaded via direct URL: {download.suggested_filename} ({os.path.getsize(dest)} bytes)")
+            # Get cookies from browser context for authenticated download
+            cookies = await page.context.cookies()
+            cookie_str = '; '.join(f"{c['name']}={c['value']}" for c in cookies)
+
+            # Download via HTTP with browser cookies (bypasses CDP download issues)
+            import urllib.request
+            logger.info(f"HTTP download attempt: {download_url[:80]}...")
+            logger.info(f"Using {len(cookies)} cookies from browser context")
+            req = urllib.request.Request(download_url, headers={
+                'Cookie': cookie_str,
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
+                'Referer': 'https://www.sellersprite.com/v2/export-log',
+                'Accept': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, */*',
+            })
+            with urllib.request.urlopen(req, timeout=120) as resp:
+                logger.info(f"HTTP response: status={resp.status}, content-type={resp.headers.get('Content-Type')}, content-length={resp.headers.get('Content-Length')}")
+                data = resp.read()
+                if len(data) == 0:
+                    raise Exception("Downloaded 0 bytes from URL")
+                # Check if we got an HTML error page instead of xlsx
+                if data[:4] == b'<htm' or data[:5] == b'<!DOC':
+                    raise Exception(f"Got HTML instead of xlsx ({len(data)} bytes)")
+                with open(dest, 'wb') as f:
+                    f.write(data)
+            logger.info(f"Downloaded via HTTP: {filename} ({os.path.getsize(dest)} bytes)")
             return dest
         except Exception as e:
-            logger.warning(f"Direct URL download failed, trying click method: {e}")
+            logger.warning(f"Direct HTTP download failed, trying click method: {e}")
 
     # Method 2: Navigate to export log and click download for the matching row
     target_filename = export_entry.get('filename', '')
