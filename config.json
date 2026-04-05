@@ -197,9 +197,9 @@
   },
   "adspower": {
     "enabled": true,
-    "api_url": "http://localhost:50325",
-    "api_key": "",
-    "profile_id": ""
+    "api_url": "http://host.docker.internal:50325",
+    "api_key": "073b915f8ee47c15bb1cf4da963f986f00360af44f2e7041",
+    "profile_id": "k1amt6rq"
   },
   "collection": {
     "reverse_asin_asins": [

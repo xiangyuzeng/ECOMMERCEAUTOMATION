@@ -42,10 +42,11 @@ SELECTORS = {
 class SellerSpriteCollector:
     """Automates SellerSprite data exports via Playwright browser automation."""
 
-    def __init__(self, config, page, download_dir, on_task_start=None, on_task_done=None):
+    def __init__(self, config, page, download_dir, product_id=None, on_task_start=None, on_task_done=None):
         self.config = config
         self.page = page
         self.download_dir = download_dir
+        self.product_id = product_id
         self.collection = config.get('collection', {})
         self.delay = self.collection.get('delay_between_tasks_sec', 5)
         self.results = []
@@ -285,12 +286,18 @@ class SellerSpriteCollector:
         try:
             async with self.page.expect_download(timeout=15000) as download_info:
                 await export_btn.click(force=True)
-            # Direct download worked
+            # Direct download worked — wait for content to finish transferring
             download = await download_info.value
+            dl_path = await download.path()  # blocks until download completes
+            if dl_path is None:
+                raise Exception("Download was cancelled or failed")
             dest_path = os.path.join(self.download_dir, download.suggested_filename)
             await download.save_as(dest_path)
-            logger.info(f"Direct download: {download.suggested_filename}")
-            final = move_to_inputs(dest_path, 'sellersprite')
+            if os.path.getsize(dest_path) == 0:
+                os.remove(dest_path)
+                raise Exception(f"Downloaded file is 0 bytes: {download.suggested_filename}")
+            logger.info(f"Direct download: {download.suggested_filename} ({os.path.getsize(dest_path)} bytes)")
+            final = move_to_inputs(dest_path, 'sellersprite', product_id=self.product_id)
             return {'task': task_name, 'status': 'OK', 'file': os.path.basename(final)}
 
         except Exception:
@@ -335,10 +342,16 @@ class SellerSpriteCollector:
                             async with self.page.expect_download(timeout=30000) as download_info:
                                 await btn.click(force=True)
                             download = await download_info.value
+                            dl_path = await download.path()
+                            if dl_path is None:
+                                raise Exception("Download cancelled or failed")
                             dest_path = os.path.join(self.download_dir, download.suggested_filename)
                             await download.save_as(dest_path)
-                            logger.info(f"Downloaded: {download.suggested_filename}")
-                            final = move_to_inputs(dest_path, 'sellersprite')
+                            if os.path.getsize(dest_path) == 0:
+                                os.remove(dest_path)
+                                raise Exception(f"0-byte file: {download.suggested_filename}")
+                            logger.info(f"Downloaded: {download.suggested_filename} ({os.path.getsize(dest_path)} bytes)")
+                            final = move_to_inputs(dest_path, 'sellersprite', product_id=self.product_id)
                             return {'task': task_name, 'status': 'OK', 'file': os.path.basename(final)}
                         except Exception as e:
                             logger.warning(f"Click '{sel}' did not trigger download: {e}")
@@ -358,10 +371,16 @@ class SellerSpriteCollector:
                             async with self.page.expect_download(timeout=15000) as download_info:
                                 await btn.click(force=True)
                             download = await download_info.value
+                            dl_path = await download.path()
+                            if dl_path is None:
+                                raise Exception("Download cancelled or failed")
                             dest_path = os.path.join(self.download_dir, download.suggested_filename)
                             await download.save_as(dest_path)
-                            logger.info(f"Downloaded via confirm: {download.suggested_filename}")
-                            final = move_to_inputs(dest_path, 'sellersprite')
+                            if os.path.getsize(dest_path) == 0:
+                                os.remove(dest_path)
+                                raise Exception(f"0-byte file: {download.suggested_filename}")
+                            logger.info(f"Downloaded via confirm: {download.suggested_filename} ({os.path.getsize(dest_path)} bytes)")
+                            final = move_to_inputs(dest_path, 'sellersprite', product_id=self.product_id)
                             return {'task': task_name, 'status': 'OK', 'file': os.path.basename(final)}
                         except Exception:
                             continue
@@ -383,7 +402,7 @@ class SellerSpriteCollector:
             )
             if new_export:
                 filepath = await download_from_export_log(self.page, new_export, self.download_dir)
-                final = move_to_inputs(filepath, 'sellersprite')
+                final = move_to_inputs(filepath, 'sellersprite', product_id=self.product_id)
                 logger.info(f"Downloaded from export log: {os.path.basename(final)}")
                 return {'task': task_name, 'status': 'OK', 'file': os.path.basename(final)}
         except Exception as e:

@@ -93,9 +93,9 @@ async def setup_browser_adspower(config):
         raise BrowserLaunchError("Playwright not installed. Run: pip3 install playwright")
 
     ads_config = config.get('adspower', {})
-    base_url = ads_config.get('api_url', 'http://local.adspower.net:50325')
-    api_key = ads_config.get('api_key')
-    user_id = ads_config.get('profile_id')
+    base_url = os.environ.get('ADSPOWER_API_URL') or ads_config.get('api_url', 'http://local.adspower.net:50325')
+    api_key = os.environ.get('ADSPOWER_API_KEY') or ads_config.get('api_key')
+    user_id = os.environ.get('ADSPOWER_PROFILE_ID') or ads_config.get('profile_id')
 
     if not user_id:
         # Auto-detect: use first available profile
@@ -107,6 +107,13 @@ async def setup_browser_adspower(config):
 
     # Start the browser and get WebSocket URL
     ws_url, _ = adspower_start_browser(base_url, user_id, api_key)
+
+    # When running inside Docker, AdsPower returns ws://127.0.0.1:PORT/...
+    # but 127.0.0.1 inside Docker means the container, not the host.
+    # Rewrite to host.docker.internal if the API URL uses it.
+    if 'host.docker.internal' in base_url and ('127.0.0.1' in ws_url or 'localhost' in ws_url):
+        ws_url = ws_url.replace('127.0.0.1', 'host.docker.internal').replace('localhost', 'host.docker.internal')
+        logger.info(f"Rewritten WebSocket URL for Docker: {ws_url}")
 
     # Connect Playwright via CDP
     pw = await async_playwright().start()
@@ -397,17 +404,23 @@ def wait_for_file(directory, prefix, timeout=120, poll_interval=2):
     raise TimeoutError(f"No new file matching '{prefix}*' in {directory} after {timeout}s")
 
 
-def move_to_inputs(filepath, category='sellersprite'):
+def move_to_inputs(filepath, category='sellersprite', product_id=None):
     """Move downloaded file to the correct inputs/ subdirectory.
 
     Args:
         filepath: path to the downloaded file
         category: 'sellersprite' or 'seller-central'
+        product_id: if set, saves to data/{product_id}/inputs/ instead of root inputs/
 
     Returns:
         New filepath in inputs/
     """
-    dest_dir = INPUTS_SS if category == 'sellersprite' else INPUTS_SC
+    if product_id:
+        from scripts.config_manager import get_product_paths
+        ppaths = get_product_paths(product_id)
+        dest_dir = ppaths['inputs_sellersprite'] if category == 'sellersprite' else ppaths['inputs_seller_central']
+    else:
+        dest_dir = INPUTS_SS if category == 'sellersprite' else INPUTS_SC
     os.makedirs(str(dest_dir), exist_ok=True)
 
     filename = os.path.basename(filepath)
@@ -578,9 +591,15 @@ async def download_from_export_log(page, export_entry, download_dir):
             async with page.expect_download(timeout=60000) as download_info:
                 await page.evaluate(f'() => window.open("{download_url}", "_blank")')
             download = await download_info.value
+            dl_path = await download.path()  # wait for download to finish
+            if dl_path is None:
+                raise Exception("Export log download cancelled or failed")
             dest = os.path.join(download_dir, download.suggested_filename)
             await download.save_as(dest)
-            logger.info(f"Downloaded via direct URL: {download.suggested_filename}")
+            if os.path.getsize(dest) == 0:
+                os.remove(dest)
+                raise Exception(f"Downloaded file is 0 bytes: {download.suggested_filename}")
+            logger.info(f"Downloaded via direct URL: {download.suggested_filename} ({os.path.getsize(dest)} bytes)")
             return dest
         except Exception as e:
             logger.warning(f"Direct URL download failed, trying click method: {e}")

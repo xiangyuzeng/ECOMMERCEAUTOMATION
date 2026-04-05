@@ -310,6 +310,13 @@ async def scrape_amazon_product(page, asin):
             debug = js_info.get('_debug', {})
             if debug:
                 logger.info(f"Amazon page debug: {debug}")
+
+            # Validate we're actually on an Amazon page before trusting scraped data
+            current_url = page.url
+            if 'amazon.com' not in current_url and 'amazon.co' not in current_url:
+                logger.warning(f"Not on Amazon page ({current_url}) — scraped data is invalid, ignoring")
+                js_info = {}  # discard all scraped data
+
             info['title'] = js_info.get('title', '')
             if not info['title']:
                 logger.warning(f"JS extraction returned empty title. Page title: {debug.get('page_title', '?')}")
@@ -420,6 +427,13 @@ async def scrape_amazon_product(page, asin):
         info['child_asins'] = child_asins if child_asins else [asin]
     except Exception:
         info['child_asins'] = [asin]
+
+    # Final validation: ensure title is meaningful (not garbage from wrong page)
+    title = info.get('title', '')
+    garbage_titles = ['amazon ads insights', 'sellersprite', 'page not found', '404']
+    if not title or len(title) < 5 or any(g in title.lower() for g in garbage_titles):
+        logger.warning(f"Invalid title '{title}' for {asin} — using placeholder")
+        info['title'] = f"Product {asin}"
 
     logger.info(f"Scraped product: {info.get('title', 'N/A')[:60]}... "
                 f"brand={info.get('brand')}, price=${info.get('price')}, "

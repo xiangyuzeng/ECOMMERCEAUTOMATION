@@ -428,6 +428,7 @@ async def main():
         if not args.seller_central_only:
             logger.info("Starting SellerSprite collection...")
             ss = SellerSpriteCollector(config, page, download_dir,
+                                       product_id=product_id,
                                        on_task_start=lambda tid: on_task_start(tid, 'sellersprite'),
                                        on_task_done=on_task_done)
             ss_results = await ss.collect_all()
@@ -493,9 +494,9 @@ async def main():
             # Don't close the AdsPower browser — just disconnect Playwright
             ads_config = config.get('adspower', {})
             adspower_stop_browser(
-                ads_config.get('api_url', 'http://local.adspower.net:50325'),
+                os.environ.get('ADSPOWER_API_URL') or ads_config.get('api_url', 'http://local.adspower.net:50325'),
                 adspower_user_id,
-                ads_config.get('api_key'),
+                os.environ.get('ADSPOWER_API_KEY') or ads_config.get('api_key'),
             )
         elif context:
             await context.close()

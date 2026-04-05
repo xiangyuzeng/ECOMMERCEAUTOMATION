@@ -1,0 +1,13 @@
+{
+  "name": "ecommerceautomation-launcher",
+  "version": "1.0.0",
+  "description": "肯葳科技亚马逊自动运营系统 — Windows 启动器",
+  "main": "launcher.js",
+  "scripts": {
+    "build": "npx pkg launcher.js --targets node18-win-x64 --output EcommerceAutomation.exe"
+  },
+  "pkg": {
+    "targets": ["node18-win-x64"],
+    "outputPath": "dist"
+  }
+}

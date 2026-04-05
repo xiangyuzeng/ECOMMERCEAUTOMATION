@@ -76,6 +76,20 @@ export async function GET(request) {
     lastRun = config.last_run || null;
     ignoreList = config.sellersprite_files?.ignore || [];
     adspower = config.adspower || {};
+    // Override with data/setup.json (from setup wizard)
+    try {
+      const setupPath = path.join(PROJECT_ROOT, 'data', 'setup.json');
+      if (fs.existsSync(setupPath)) {
+        const setup = JSON.parse(fs.readFileSync(setupPath, 'utf-8'));
+        if (setup.api_url) adspower.api_url = setup.api_url;
+        if (setup.api_key) adspower.api_key = setup.api_key;
+        if (setup.profile_id) adspower.profile_id = setup.profile_id;
+      }
+    } catch {}
+    // Override with environment variables (highest priority, for Docker)
+    if (process.env.ADSPOWER_API_URL) adspower.api_url = process.env.ADSPOWER_API_URL;
+    if (process.env.ADSPOWER_API_KEY) adspower.api_key = process.env.ADSPOWER_API_KEY;
+    if (process.env.ADSPOWER_PROFILE_ID) adspower.profile_id = process.env.ADSPOWER_PROFILE_ID;
   } catch {}
 
   // Filter out _removed directory and mark ignored files
